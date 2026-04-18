@@ -1,26 +1,109 @@
 @import "tailwindcss";
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --site-bg-0: #050607;
+  --site-bg-1: #120b0a;
+  --site-bg-2: #0a1114;
+  --site-text: #e7e6e2;
+  --site-muted: #8b8f94;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-headline), sans-serif;
+  background:
+    radial-gradient(circle at 14% 20%, color-mix(in srgb, #8a1919 16%, transparent), transparent 36%),
+    radial-gradient(circle at 82% 12%, color-mix(in srgb, #58a0b2 15%, transparent), transparent 40%),
+    linear-gradient(145deg, var(--site-bg-0), var(--site-bg-1) 42%, var(--site-bg-2));
+  color: var(--site-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-shell {
+  position: relative;
+}
+
+.site-shell::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.12;
+  background-image:
+    linear-gradient(transparent 0, rgba(255, 255, 255, 0.03) 50%, transparent 100%),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 2px,
+      rgba(255, 255, 255, 0.02) 3px,
+      transparent 4px
+    );
+  z-index: 0;
+}
+
+.mono {
+  font-family: var(--font-mono), monospace;
+}
+
+.animate-rise {
+  animation: rise-in 620ms ease forwards;
+}
+
+.animate-fade-delayed {
+  opacity: 0;
+  animation: fade-in 900ms ease 220ms forwards;
+}
+
+.animate-drift {
+  animation: drift 8s ease-in-out infinite;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes drift {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-7px) scale(1.015);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
 }
