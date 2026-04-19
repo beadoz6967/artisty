@@ -1,0 +1,22 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Song {
+  id           Int     @id @default(autoincrement())
+  slug         String  @unique
+  title        String
+  features     String  // JSON array string e.g. '["Joeyy"]' or '[]'
+  album        String
+  year         Int
+  releaseDate  String  // ISO date e.g. "2022-09-11"
+  durationSecs Int     // in seconds
+  singleCover  String? // URL, null if no dedicated single art
+  albumCover   String  // URL, always present
+  description  String
+}

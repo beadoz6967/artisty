@@ -48,6 +48,21 @@ export type StoryArc = {
   image?: string;
 };
 
+// A song record from the database
+export type Song = {
+  id: number;
+  slug: string;
+  title: string;
+  features: string; // JSON array string
+  album: string;
+  year: number;
+  releaseDate: string;
+  durationSecs: number;
+  singleCover: string | null;
+  albumCover: string;
+  description: string;
+};
+
 // Root config shape — every character file exports one of these
 export type CharacterConfig = {
   id: string;

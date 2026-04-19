@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: '**.cdninstagram.com' },
       { protocol: 'https', hostname: 'cdn-images.dzcdn.net' },
       { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'f4.bcbits.com' },
+      { protocol: 'https', hostname: 'coverartarchive.org' },
     ],
   },
 };

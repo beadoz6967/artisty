@@ -1,6 +1,7 @@
 // Smokedope world page — cloud-rap dossier with official artwork chronology.
 import Image from 'next/image';
 import type { CharacterConfig } from '@/lib/types';
+import SongSearch from './SongSearch';
 
 type Props = {
   config: CharacterConfig;
@@ -13,13 +14,31 @@ const highlights = [
   { label: 'Breakout Era', value: 'THE PEAK (2025)' },
 ];
 
-const featuredTracks = [
-  'In Da Party',
-  'IM NOT GOD BUT I WISH I WAS',
+const comeupTracks = [
   'White Owls',
+  'Glock',
+  'Khalifa',
+  'Frat',
+  'Too Gone',
+  'Ball Out',
+];
+
+const peakTracks = [
+  'In Da Party',
+  'Icey Soles',
   'Eastbay',
+  'Gnarly',
+  'Hypebeast',
+  'Back2Back',
+];
+
+const comedownTracks = [
+  'Banshee',
   'My Chalice',
-  'banshee',
+  'Be My Zombie',
+  'Closing Time',
+  'Flocc',
+  'Famous',
 ];
 
 export function SmokePage({ config }: Props) {
@@ -103,6 +122,20 @@ export function SmokePage({ config }: Props) {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14">
+        <p style={{ color: palette.accent }} className="mono text-[0.56rem] uppercase tracking-[0.28em]">Song vault</p>
+        <h2 className="text-2xl sm:text-3xl font-black mt-3">Search every track</h2>
+        <div className="mt-6 max-w-lg">
+          <SongSearch
+            accent={palette.accent}
+            border={palette.border}
+            surface={palette.surface}
+            text={palette.text}
+            muted={palette.muted}
+          />
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14">
         <p style={{ color: palette.accent }} className="mono text-[0.56rem] uppercase tracking-[0.28em]">Discography timeline</p>
         <h2 className="text-2xl sm:text-3xl font-black mt-3">Official release chronology</h2>
 
@@ -129,6 +162,36 @@ export function SmokePage({ config }: Props) {
         </div>
       </section>
 
+      {/* THE COMEUP */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div className="relative overflow-hidden rounded-sm aspect-square border border-[var(--color-border)]">
+          <Image
+            src="https://cdn-images.dzcdn.net/images/cover/23fa0725c20a28ef2dfdf6d173792099/640x640-000000-80-0-0.jpg"
+            alt="THE COMEUP cover"
+            fill
+            className="object-cover"
+          />
+        </div>
+
+        <div>
+          <p style={{ color: palette.accent }} className="mono text-[0.56rem] uppercase tracking-[0.28em]">2024</p>
+          <h2 className="text-2xl sm:text-3xl font-black mt-3">THE COMEUP</h2>
+          <p className="mt-4 text-sm leading-relaxed text-[var(--color-muted)]">
+            Before the breakout there was the blueprint. THE COMEUP locked in the aesthetic framework. Cover art cryptic, beats deliberately lo-fi, energy restrained. This is where the visual identity solidified before the music reached a wider room.
+          </p>
+
+          <div className="mt-6 border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+            <p className="mono text-[0.54rem] uppercase tracking-[0.25em] text-[var(--color-muted)]">Popular tracks</p>
+            <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm text-[var(--color-text)]">
+              {comeupTracks.map((track) => (
+                <li key={track}>{track}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* THE PEAK */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         <div className="relative overflow-hidden rounded-sm aspect-square border border-[var(--color-border)]">
           <Image
@@ -140,16 +203,45 @@ export function SmokePage({ config }: Props) {
         </div>
 
         <div>
-          <p style={{ color: palette.accent }} className="mono text-[0.56rem] uppercase tracking-[0.28em]">Breakout lens</p>
-          <h2 className="text-2xl sm:text-3xl font-black mt-3">THE PEAK and aftershock</h2>
+          <p style={{ color: palette.accent }} className="mono text-[0.56rem] uppercase tracking-[0.28em]">2025</p>
+          <h2 className="text-2xl sm:text-3xl font-black mt-3">THE PEAK</h2>
           <p className="mt-4 text-sm leading-relaxed text-[var(--color-muted)]">
-            THE PEAK marks the moment his niche became a movement. THE COMEDOWN reframes that high point with more reflective writing and a colder emotional register, while maintaining the same visual identity discipline.
+            THE PEAK is where everything clicked. The beat selection got sharper, the references hit harder, and people started paying attention. Icey Soles to Eastbay, the whole back half doesn't let up.
           </p>
 
           <div className="mt-6 border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
-            <p className="mono text-[0.54rem] uppercase tracking-[0.25em] text-[var(--color-muted)]">Popular tracks pulse</p>
+            <p className="mono text-[0.54rem] uppercase tracking-[0.25em] text-[var(--color-muted)]">Popular tracks</p>
             <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm text-[var(--color-text)]">
-              {featuredTracks.map((track) => (
+              {peakTracks.map((track) => (
+                <li key={track}>{track}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* THE COMEDOWN */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div className="relative overflow-hidden rounded-sm aspect-square border border-[var(--color-border)]">
+          <Image
+            src="https://cdn-images.dzcdn.net/images/cover/1250897f68ebecf3f2d292b8cdc0438a/640x640-000000-80-0-0.jpg"
+            alt="THE COMEDOWN cover"
+            fill
+            className="object-cover"
+          />
+        </div>
+
+        <div>
+          <p style={{ color: palette.accent }} className="mono text-[0.56rem] uppercase tracking-[0.28em]">2026</p>
+          <h2 className="text-2xl sm:text-3xl font-black mt-3">THE COMEDOWN</h2>
+          <p className="mt-4 text-sm leading-relaxed text-[var(--color-muted)]">
+            What comes after the peak? Darker palette, slower tempo, more interior. THE COMEDOWN doesn't chase what THE PEAK built — it sits with the weight of it. Production gets minimal, the perspective gets heavy.
+          </p>
+
+          <div className="mt-6 border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+            <p className="mono text-[0.54rem] uppercase tracking-[0.25em] text-[var(--color-muted)]">Popular tracks</p>
+            <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm text-[var(--color-text)]">
+              {comedownTracks.map((track) => (
                 <li key={track}>{track}</li>
               ))}
             </ul>
@@ -159,8 +251,8 @@ export function SmokePage({ config }: Props) {
 
       {gallery && gallery.length > 0 && (
         <section className="mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-16">
-          <p style={{ color: palette.accent }} className="mono text-[0.56rem] uppercase tracking-[0.28em]">Visual archive</p>
-          <h2 className="text-2xl sm:text-3xl font-black mt-3">Official cover wall</h2>
+          <p style={{ color: palette.accent }} className="mono text-[0.56rem] uppercase tracking-[0.28em]">Projects</p>
+          <h2 className="text-2xl sm:text-3xl font-black mt-3">Gallery</h2>
 
           <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {gallery
