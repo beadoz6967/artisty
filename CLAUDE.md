@@ -27,3 +27,17 @@ Always respond in English.
 - Add a comment at the top of each file describing what it does
 - Comment any loop, condition, or function that might be hard to follow at a glance
 - Keep comments short and in plain English
+
+## Universal Workflow Memory (Claude + Copilot)
+- ACT mode first: execute directly and avoid unnecessary planning.
+- Do not spawn subagents unless the user explicitly asks.
+- Do not run no-op checks.
+- Patch requested files directly and keep communication concise.
+- Run `npm run build` after code edits unless the user asks for another command.
+- If the user asks for dev/live verification, run `npm run dev`.
+- For release tasks (when requested):
+	- `git add .`
+	- `git commit -m "<requested message or concise summary>"`
+	- `git push origin main`
+	- Deploy on request with `npx vercel --prod --yes`
+- In status updates, report exact changed files and command results.

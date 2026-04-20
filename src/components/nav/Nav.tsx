@@ -5,14 +5,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { smokedope } from '@/data/characters/smokedope';
-import { daredevil } from '@/data/characters/daredevil';
 import type { CharacterConfig } from '@/lib/types';
 
-const characters: CharacterConfig[] = [smokedope, daredevil];
+const characters: CharacterConfig[] = [smokedope];
 
 const navImages: Record<string, string> = {
   smokedope2016: '/concert warehouse.jpg',
-  daredevil: '/Suit press.webp',
 };
 
 // Single pinned-app tab with mouse-tracking radial glow.
