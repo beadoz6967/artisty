@@ -48,9 +48,9 @@ export type StoryArc = {
   image?: string;
 };
 
-// A song record from the database
+// A song record used by smokedope song pages
 export type Song = {
-  id: number;
+  id: string;
   slug: string;
   title: string;
   features: string; // JSON array string

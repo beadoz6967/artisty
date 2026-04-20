@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 interface SongResult {
-  id: number;
+  id: string;
   slug: string;
   title: string;
   features: string;
