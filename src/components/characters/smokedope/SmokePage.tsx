@@ -290,7 +290,7 @@ export function SmokePage({ config }: Props) {
               .map((item) => (
                 <article
                   key={item.title}
-                  className="smoke-panel p-2 group cursor-pointer transition-transform duration-300 ease-out hover:-translate-y-1"
+                  className="smoke-panel p-2 group transition-transform duration-300 ease-out hover:-translate-y-1"
                   style={{ willChange: 'transform' }}
                 >
                   <div className="smoke-frame relative aspect-square overflow-hidden">
@@ -298,7 +298,8 @@ export function SmokePage({ config }: Props) {
                       src={item.image}
                       alt={item.title}
                       fill
-                      className="object-cover transition-[transform,filter] duration-300 ease-out group-hover:scale-110 group-hover:brightness-110"
+                      className="object-cover transition-transform duration-300 ease-out group-hover:scale-110"
+                      style={{ willChange: 'transform' }}
                       sizes="240px"
                     />
                     {/* Colour wash on hover */}
