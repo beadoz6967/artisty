@@ -35,7 +35,7 @@ export default function SongPage({ song }: { song: Song }) {
           className="text-xs uppercase tracking-widest hover:opacity-70 transition-opacity"
           style={{ color: palette.muted }}
         >
-          ← smokedope2016
+          ← back to smokedope2016 archive
         </Link>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-8">
@@ -59,21 +59,26 @@ export default function SongPage({ song }: { song: Song }) {
             </h1>
             {features.length > 0 && (
               <p className="text-sm" style={{ color: palette.muted }}>
-                feat. {features.join(', ')}
+                feature signal: {features.join(', ')}
               </p>
             )}
 
             <div className="mt-4 space-y-1 text-sm" style={{ color: palette.muted }}>
-              <p><span style={{ color: palette.text }}>Released</span> {formatDate(song.releaseDate)}</p>
-              <p><span style={{ color: palette.text }}>Duration</span> {formatDuration(song.durationSecs)}</p>
+              <p><span style={{ color: palette.text }}>Release date</span> {formatDate(song.releaseDate)}</p>
+              <p><span style={{ color: palette.text }}>Runtime</span> {formatDuration(song.durationSecs)}</p>
             </div>
           </div>
         </div>
 
         {song.description && (
-          <p className="mt-10 text-sm leading-relaxed max-w-2xl" style={{ color: palette.muted }}>
-            {song.description}
-          </p>
+          <div className="mt-10 max-w-2xl">
+            <p className="text-[0.6rem] uppercase tracking-[0.22em]" style={{ color: palette.accent }}>
+              Archive note
+            </p>
+            <p className="mt-2 text-sm leading-relaxed" style={{ color: palette.muted }}>
+              {song.description}
+            </p>
+          </div>
         )}
       </div>
     </div>

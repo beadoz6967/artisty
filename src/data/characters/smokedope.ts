@@ -17,50 +17,47 @@ export const smokedope: CharacterConfig = {
   },
 
   meta: {
-    origin: 'Virginia, USA — born May 28 2001',
+    origin: 'Virginia, USA — publicly referenced in interview metadata and platform profiles',
     tags: ['cloud rap', 'emo rap', 'witch house', 'wave'],
     aliases: ['Fairfieldd'],
   },
 
   lore: [
     {
-      heading: 'No face no case',
+      heading: 'Masked signal',
       body:
-        'He has never shown his face. The name came from a Steam gamertag. ' +
-        'Anonymous is not a gimmick — it is the identity. ' +
-        '226K Instagram followers. 8 posts. Scarcity as brand.',
+        'Public interview framing repeatedly points to hidden identity as part of the project language. ' +
+        'Blurred and obscured imagery is used as design logic: less portrait, more atmosphere.',
     },
     {
-      heading: 'Origins: scam rap',
+      heading: 'Virginia origin line',
       body:
-        'Started 2022 on SMOKESHOP and SMOKESHOP 2 — scam rap aesthetics, ' +
-        'braggadocious energy, lo-fi cloud production. ' +
-        'Lil Fitted Cap became his primary producer, blending cloud rap, ' +
-        'witch-house, and emo-rap textures into pop-ready structures.',
+        'Interview metadata and platform pages place the run in Virginia while the audience scales online. ' +
+        'The catalog moves like scene dispatches: local roots, internet velocity.',
     },
     {
-      heading: 'The Joeyy feature',
+      heading: 'Underground co-sign era',
       body:
-        'A feature with Joeyy helped cement his place in the underground scene. ' +
-        'It became a credibility moment during his early rise.',
+        'Early collaborative links with established underground names helped accelerate discovery. ' +
+        'The profile rise came through networked scenes, not polished mainstream rollout.',
     },
     {
-      heading: 'THE PEAK',
+      heading: 'The trilogy arc',
       body:
-        'THE PEAK (2025) marked a major breakout era. ' +
-        'By 2026, THE COMEDOWN reframed that momentum with darker, post-peak perspective.',
+        'THE COMEUP (2024), THE PEAK (2025), and THE COMEDOWN (2026) read as a clean three-act sequence. ' +
+        'Each chapter shifts emotional weight while preserving the same coded visual universe.',
     },
     {
-      heading: 'Fairfieldd',
+      heading: 'Fairfieldd channel',
       body:
-        'His emo alias. Guitar loops, wounded vocals, and softer emotional framing. ' +
-        'Same artist, different armor.',
+        'Fairfieldd is read by listeners as a softer parallel lane with heavier emotional framing. ' +
+        'Same orbit, different weather.',
     },
     {
-      heading: 'Aesthetic language',
+      heading: '2016LYFE grammar',
       body:
-        '2010s internet nostalgia: low-fi textures, filtered photos, and intentional mystery. ' +
-        'Visual identity is part of the music, not decoration.',
+        'Core language is post-SoundCloud nostalgia: grain, blur, low-light flash, and coded captions. ' +
+        'The world should feel remembered and unstable, never sterile.',
     },
   ],
 
@@ -69,47 +66,49 @@ export const smokedope: CharacterConfig = {
       title: 'THE COMEDOWN',
       year: 2026,
       tracks: 13,
-      note: 'Reflective post-breakout chapter',
+      note: 'Third act of the trilogy, written in after-peak tones',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/1250897f68ebecf3f2d292b8cdc0438a/640x640-000000-80-0-0.jpg',
     },
     {
       title: 'SLOW DOWN',
       year: 2025,
-      note: 'w/ Lil Fitted Cap',
+      note: 'Single-era extension with Lil Fitted Cap',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/c9a60786288cd3b9e35c02844dc8760c/640x640-000000-80-0-0.jpg',
     },
     {
       title: 'THE PEAK',
       year: 2025,
-      note: 'Breakout milestone release',
+      note: 'Middle act and breakout-pressure point',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/b004c8c39c4f7aef180e34dbe59cde18/640x640-000000-80-0-0.jpg',
     },
     {
       title: 'THE COMEUP',
       year: 2024,
+      note: 'First act that locks in the trilogy blueprint',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/23fa0725c20a28ef2dfdf6d173792099/640x640-000000-80-0-0.jpg',
     },
     {
       title: '2016',
       year: 2023,
+      note: 'Pre-trilogy catalog anchor',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/7df8570d4580e73204d5d8b25794b772/640x640-000000-80-0-0.jpg',
     },
     {
       title: 'SMOKESHOP 2',
       year: 2023,
-      note: 'Origins continuation',
+      note: 'Early run continuation',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/caeae81dfc4833c782cc96b8b25900fa/640x640-000000-80-0-0.jpg',
     },
     {
       title: 'SMOKESHOP',
       year: 2022,
-      note: 'Origins entry point',
+      note: 'Early entry point in the public catalog',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/ec29a0b3e25f66c06e7fa38288003174/640x640-000000-80-0-0.jpg',
     },
     {
       title: 'XTC',
       year: 2022,
-      note: 'Early melodic tape era',
+      note: 'Early melodic marker',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/401933a06dfd6cce4413dc1c469c41f5/640x640-000000-80-0-0.jpg',
     },
   ],

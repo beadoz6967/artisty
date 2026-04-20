@@ -10,8 +10,8 @@ type Props = {
 const highlights = [
   { label: 'Origin', value: 'Virginia, USA' },
   { label: 'Born', value: '28 May 2001' },
-  { label: 'Persona', value: 'No face / high signal' },
-  { label: 'Breakout Era', value: 'THE PEAK (2025)' },
+  { label: 'Persona', value: 'Masked / image-controlled' },
+  { label: 'Trilogy Arc', value: 'COMEUP → PEAK → COMEDOWN' },
 ];
 
 const comeupTracks = [
@@ -70,7 +70,7 @@ export function SmokePage({ config }: Props) {
         <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/65 to-black/90" />
 
         <div className="relative z-10 mx-auto max-w-6xl pt-24 md:pt-32">
-          <p className="mono text-[0.56rem] tracking-[0.3em] uppercase text-[var(--color-muted)]">Archive: cloud rap dossier</p>
+          <p className="mono text-[0.56rem] tracking-[0.3em] uppercase text-[var(--color-muted)]">Signal archive: smokedope2016</p>
           <h1
             style={{ color: palette.accent }}
             className="text-[clamp(2.35rem,12vw,10rem)] leading-[0.84] font-black tracking-tight mt-4"
@@ -78,7 +78,7 @@ export function SmokePage({ config }: Props) {
             {displayName}
           </h1>
           <p className="max-w-2xl text-sm md:text-base text-[var(--color-muted)] mt-5">
-            Anonymous, image-controlled, and stylistically nostalgic. A 2020s underground artist using scarcity, mood, and cover-art identity as the main storytelling engine.
+            Factual core: Virginia roots, masked presentation, and a trilogy run that defines the current era. Atmosphere layer: blur, low-light flash, and memory-coded internet haze.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -105,8 +105,8 @@ export function SmokePage({ config }: Props) {
 
       <section className="mx-auto max-w-6xl px-4 sm:px-6 py-10 sm:py-12 grid grid-cols-1 lg:grid-cols-5 gap-8">
         <div className="lg:col-span-2">
-          <p style={{ color: palette.accent }} className="mono text-[0.56rem] uppercase tracking-[0.28em]">Lore markers</p>
-          <h2 className="text-2xl sm:text-3xl font-black mt-3">How the persona works</h2>
+          <p style={{ color: palette.accent }} className="mono text-[0.56rem] uppercase tracking-[0.28em]">Persona map</p>
+          <h2 className="text-2xl sm:text-3xl font-black mt-3">How the signal is built</h2>
         </div>
 
         <div className="lg:col-span-3 space-y-8">
@@ -123,7 +123,7 @@ export function SmokePage({ config }: Props) {
 
       <section className="mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14">
         <p style={{ color: palette.accent }} className="mono text-[0.56rem] uppercase tracking-[0.28em]">Song vault</p>
-        <h2 className="text-2xl sm:text-3xl font-black mt-3">Search every track</h2>
+        <h2 className="text-2xl sm:text-3xl font-black mt-3">Search the full catalog</h2>
         <div className="mt-6 max-w-lg">
           <SongSearch
             accent={palette.accent}
@@ -137,7 +137,7 @@ export function SmokePage({ config }: Props) {
 
       <section className="mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14">
         <p style={{ color: palette.accent }} className="mono text-[0.56rem] uppercase tracking-[0.28em]">Discography timeline</p>
-        <h2 className="text-2xl sm:text-3xl font-black mt-3">Official release chronology</h2>
+        <h2 className="text-2xl sm:text-3xl font-black mt-3">Timeline: official releases</h2>
 
         <div className="mt-8 space-y-4">
           {sortedDiscography.map((entry) => (
@@ -177,7 +177,7 @@ export function SmokePage({ config }: Props) {
           <p style={{ color: palette.accent }} className="mono text-[0.56rem] uppercase tracking-[0.28em]">2024</p>
           <h2 className="text-2xl sm:text-3xl font-black mt-3">THE COMEUP</h2>
           <p className="mt-4 text-sm leading-relaxed text-[var(--color-muted)]">
-            Before the breakout there was the blueprint. THE COMEUP locked in the aesthetic framework. Cover art cryptic, beats deliberately lo-fi, energy restrained. This is where the visual identity solidified before the music reached a wider room.
+            First chapter of the trilogy. THE COMEUP establishes the coded grammar: restraint, blur, and internet-memory framing. It reads like a setup tape for what the later chapters make explicit.
           </p>
 
           <div className="mt-6 border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
@@ -206,7 +206,7 @@ export function SmokePage({ config }: Props) {
           <p style={{ color: palette.accent }} className="mono text-[0.56rem] uppercase tracking-[0.28em]">2025</p>
           <h2 className="text-2xl sm:text-3xl font-black mt-3">THE PEAK</h2>
           <p className="mt-4 text-sm leading-relaxed text-[var(--color-muted)]">
-            THE PEAK is where everything clicked. The beat selection got sharper, the references hit harder, and people started paying attention. Icey Soles to Eastbay, the whole back half doesn't let up.
+            Middle chapter and breakout pressure point. THE PEAK tightens the production edges while keeping the same masked world. The songs push harder, the audience gets wider, and the mythology scales.
           </p>
 
           <div className="mt-6 border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
@@ -235,7 +235,7 @@ export function SmokePage({ config }: Props) {
           <p style={{ color: palette.accent }} className="mono text-[0.56rem] uppercase tracking-[0.28em]">2026</p>
           <h2 className="text-2xl sm:text-3xl font-black mt-3">THE COMEDOWN</h2>
           <p className="mt-4 text-sm leading-relaxed text-[var(--color-muted)]">
-            What comes after the peak? Darker palette, slower tempo, more interior. THE COMEDOWN doesn't chase what THE PEAK built — it sits with the weight of it. Production gets minimal, the perspective gets heavy.
+            Third chapter, post-peak perspective. THE COMEDOWN keeps the same visual code but shifts emotional gravity downward. It feels slower, heavier, and more reflective without leaving the established world.
           </p>
 
           <div className="mt-6 border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
@@ -252,7 +252,7 @@ export function SmokePage({ config }: Props) {
       {gallery && gallery.length > 0 && (
         <section className="mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-16">
           <p style={{ color: palette.accent }} className="mono text-[0.56rem] uppercase tracking-[0.28em]">Projects</p>
-          <h2 className="text-2xl sm:text-3xl font-black mt-3">Gallery</h2>
+          <h2 className="text-2xl sm:text-3xl font-black mt-3">Cover archive</h2>
 
           <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {gallery

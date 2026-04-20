@@ -85,7 +85,7 @@ const SPOTIFY_ACCOUNTS = 'https://accounts.spotify.com/api/token';
 const SPOTIFY_API = 'https://api.spotify.com/v1';
 const TOKEN_SAFETY_BUFFER_MS = 30_000;
 const SONG_CACHE_TTL_MS = 6 * 60 * 60_000;
-const SONG_DESCRIPTION_VERSION = 2;
+const SONG_DESCRIPTION_VERSION = 3;
 
 const globalSpotify = globalThis as GlobalSpotifyState;
 
@@ -156,26 +156,26 @@ function inferImageryFromTitle(title: string): string {
   const t = title.toLowerCase();
 
   if (/intro|interlude|outro|closing/.test(t)) {
-    return 'It functions like a framing moment in the release, shaping the atmosphere around it.';
+    return 'The title reads like a sequence marker, built to set atmosphere as much as to stand alone.';
   }
 
   if (/night|dark|moon|dream|sleep|dusk|midnight/.test(t)) {
-    return 'The title suggests a late-night mood with hazy, after-hours imagery.';
+    return 'Its language points to late-night haze: low light, slow pulse, and after-hours drift.';
   }
 
   if (/xbox|halo|lag|online|game|party|red ring/.test(t)) {
-    return 'Its naming leans into internet-era and gaming-coded references, a big part of this catalog tone.';
+    return 'The naming pulls from internet-native and gaming-coded references that define this catalog memory lane.';
   }
 
   if (/nike|goyard|socks|bape|shirt|ferragamo|foamposite/.test(t)) {
-    return 'The title reads like style-language: fashion and object details driving the visual identity.';
+    return 'The phrase works like style shorthand, using brands and materials as visual language.';
   }
 
   if (/truck|drank|glock|ball|smoke|high|lean|trap/.test(t)) {
-    return 'The wording points to street-level motion and flex imagery rather than abstract storytelling.';
+    return 'The wording leans into motion-and-flex imagery over explicit linear storytelling.';
   }
 
-  return 'The naming follows the clipped, coded style that gives smokedope2016 tracks their distinct visual feel.';
+  return 'The naming follows clipped codewords that keep the mood suggestive rather than fully spelled out.';
 }
 
 function buildSongDescription(input: {
@@ -213,25 +213,25 @@ function buildSongDescription(input: {
   const runtime = formatDuration(durationSecs);
   const positionLabel = getTrackPositionLabel(trackNumber, totalTracks);
 
-  let durationFact = 'around the project average in length';
-  if (durationSecs === minDurationSecs) durationFact = 'the shortest cut on the release';
-  else if (durationSecs === maxDurationSecs) durationFact = 'the longest cut on the release';
-  else if (durationSecs < avgDurationSecs - 18) durationFact = 'one of the quicker cuts on the release';
-  else if (durationSecs > avgDurationSecs + 18) durationFact = 'one of the more extended cuts on the release';
+  let durationFact = 'near the project runtime average';
+  if (durationSecs === minDurationSecs) durationFact = 'the shortest runtime on the release';
+  else if (durationSecs === maxDurationSecs) durationFact = 'the longest runtime on the release';
+  else if (durationSecs < avgDurationSecs - 18) durationFact = 'on the quicker side of the tracklist';
+  else if (durationSecs > avgDurationSecs + 18) durationFact = 'on the longer side of the tracklist';
 
   const lead = isPrimaryArtist
-    ? `${title} lands on ${albumName} as ${positionLabel} (track ${trackNumber} of ${totalTracks}).`
+    ? `${title} appears on ${albumName} as ${positionLabel} (track ${trackNumber} of ${totalTracks}).`
     : `${title} places smokedope2016 on ${albumName} as ${positionLabel} (track ${trackNumber} of ${totalTracks}).`;
 
-  const timing = `It dropped on ${prettyDate} during ${season} and runs ${runtime}, making it ${durationFact}.`;
+  const timing = `Released ${prettyDate} (${season}), it runs ${runtime} and sits ${durationFact}.`;
 
   const featureFact = features.length > 0
-    ? `Feature note: ${features.join(', ')} ${features.length === 1 ? 'appears' : 'appear'} on this record.`
-    : 'It is carried as a solo smokedope2016 performance.';
+    ? `Feature signal: ${features.join(', ')} ${features.length === 1 ? 'is listed' : 'are listed'} on this cut.`
+    : 'No listed guest features; this track is presented as a solo performance.';
 
   const visualFact = hasDedicatedSingleCover
-    ? 'Visually, Spotify gives it dedicated single artwork, so it stands apart from album-era cover sets.'
-    : `Visually, it uses the ${albumName} release artwork on Spotify, tying it to that project's era and look.`;
+    ? 'Visual note: Spotify assigns dedicated single artwork, separating it from the parent album palette.'
+    : `Visual note: Spotify uses ${albumName} cover art, keeping the track inside that era palette.`;
 
   return [lead, timing, inferImageryFromTitle(title), featureFact, visualFact].join(' ');
 }
