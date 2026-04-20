@@ -15,30 +15,50 @@ const highlights = [
 ];
 
 const comeupTracks = [
-  'White Owls',
-  'Glock',
-  'Khalifa',
-  'Frat',
-  'Too Gone',
-  'Ball Out',
+  { n: 1, title: 'Drank', dur: '2:00' },
+  { n: 2, title: 'White Owls', dur: '3:18' },
+  { n: 3, title: 'Glock', dur: '3:26' },
+  { n: 4, title: 'Merch', dur: '2:38' },
+  { n: 5, title: 'No Water', dur: '2:07' },
+  { n: 6, title: 'Frat', dur: '3:21' },
+  { n: 7, title: 'Foamposite Interlude', dur: '3:22' },
+  { n: 8, title: 'My Style', dur: '3:48' },
+  { n: 9, title: 'Ball Out', dur: '2:50' },
+  { n: 10, title: 'Khalifa', dur: '3:00' },
+  { n: 11, title: 'High', dur: '2:53' },
+  { n: 12, title: 'Mall', dur: '2:38' },
+  { n: 13, title: 'Too Gone', dur: '3:32' },
 ];
 
 const peakTracks = [
-  'In Da Party',
-  'Icey Soles',
-  'Eastbay',
-  'Gnarly',
-  'Hypebeast',
-  'Elite Socks',
+  { n: 1, title: 'Dream Caster' },
+  { n: 2, title: 'Marlon DuBois' },
+  { n: 3, title: 'Icey Soles' },
+  { n: 4, title: 'Taipei / Waterbed' },
+  { n: 5, title: 'In Da Party' },
+  { n: 6, title: 'Hypebeast' },
+  { n: 7, title: 'Elite Socks' },
+  { n: 8, title: 'Trust' },
+  { n: 9, title: 'Off Tha Cid' },
+  { n: 10, title: 'Ball Out' },
+  { n: 11, title: 'Gnarly' },
+  { n: 12, title: 'Eastbay' },
 ];
 
 const comedownTracks = [
-  'Banshee',
-  'My Chalice',
-  'Be My Zombie',
-  'Closing Time',
-  'Flocc',
-  'Famous',
+  { n: 1, title: 'Banshee' },
+  { n: 2, title: 'My Chalice' },
+  { n: 3, title: "Wild 'N Out" },
+  { n: 4, title: 'Smoking Kills' },
+  { n: 5, title: 'Flocc' },
+  { n: 6, title: 'How I Bled' },
+  { n: 7, title: 'Forgiato' },
+  { n: 8, title: 'Be My Zombie' },
+  { n: 9, title: 'Ozweego' },
+  { n: 10, title: 'Famous' },
+  { n: 11, title: 'Lips Sealed' },
+  { n: 12, title: 'Lay My Body Down' },
+  { n: 13, title: 'Closing Time' },
 ];
 
 export function SmokePage({ config }: Props) {
@@ -181,10 +201,14 @@ export function SmokePage({ config }: Props) {
           </p>
 
           <div className="smoke-panel mt-6 p-4">
-            <p className="mono text-[0.54rem] uppercase tracking-[0.25em] text-[#b4c2dc]">Popular tracks</p>
-            <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm text-[#e4e9f2]">
+            <p className="mono text-[0.54rem] uppercase tracking-[0.25em] text-[#b4c2dc]">Tracklist</p>
+            <ul className="mt-3 space-y-1">
               {comeupTracks.map((track) => (
-                <li key={track}>{track}</li>
+                <li key={track.n} className="flex items-baseline gap-3 text-sm text-[#e4e9f2]">
+                  <span className="mono text-[0.6rem] text-[#7a8faa] w-4 shrink-0">{track.n}</span>
+                  <span className="flex-1">{track.title}</span>
+                  <span className="mono text-[0.6rem] text-[#7a8faa] shrink-0">{track.dur}</span>
+                </li>
               ))}
             </ul>
           </div>
@@ -210,10 +234,13 @@ export function SmokePage({ config }: Props) {
           </p>
 
           <div className="smoke-panel mt-6 p-4">
-            <p className="mono text-[0.54rem] uppercase tracking-[0.25em] text-[#b4c2dc]">Popular tracks</p>
-            <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm text-[#e4e9f2]">
+            <p className="mono text-[0.54rem] uppercase tracking-[0.25em] text-[#b4c2dc]">Tracklist</p>
+            <ul className="mt-3 space-y-1">
               {peakTracks.map((track) => (
-                <li key={track}>{track}</li>
+                <li key={track.n} className="flex items-baseline gap-3 text-sm text-[#e4e9f2]">
+                  <span className="mono text-[0.6rem] text-[#7a8faa] w-4 shrink-0">{track.n}</span>
+                  <span className="flex-1">{track.title}</span>
+                </li>
               ))}
             </ul>
           </div>
@@ -239,10 +266,13 @@ export function SmokePage({ config }: Props) {
           </p>
 
           <div className="smoke-panel mt-6 p-4">
-            <p className="mono text-[0.54rem] uppercase tracking-[0.25em] text-[#b4c2dc]">Popular tracks</p>
-            <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm text-[#e4e9f2]">
+            <p className="mono text-[0.54rem] uppercase tracking-[0.25em] text-[#b4c2dc]">Tracklist</p>
+            <ul className="mt-3 space-y-1">
               {comedownTracks.map((track) => (
-                <li key={track}>{track}</li>
+                <li key={track.n} className="flex items-baseline gap-3 text-sm text-[#e4e9f2]">
+                  <span className="mono text-[0.6rem] text-[#7a8faa] w-4 shrink-0">{track.n}</span>
+                  <span className="flex-1">{track.title}</span>
+                </li>
               ))}
             </ul>
           </div>
