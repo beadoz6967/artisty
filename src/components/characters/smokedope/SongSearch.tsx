@@ -34,10 +34,21 @@ export default function SongSearch({ accent, border, surface, text, muted }: Pro
     if (!query.trim()) { setResults([]); setOpen(false); return; }
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(async () => {
-      const res = await fetch(`/api/songs?q=${encodeURIComponent(query)}`);
-      const data: SongResult[] = await res.json();
-      setResults(data);
-      setOpen(true);
+      try {
+        const res = await fetch(`/api/songs?q=${encodeURIComponent(query)}`);
+        if (!res.ok) {
+          setResults([]);
+          setOpen(true);
+          return;
+        }
+
+        const data: unknown = await res.json();
+        setResults(Array.isArray(data) ? (data as SongResult[]) : []);
+        setOpen(true);
+      } catch {
+        setResults([]);
+        setOpen(true);
+      }
     }, 200);
     return () => { if (timer.current) clearTimeout(timer.current); };
   }, [query]);

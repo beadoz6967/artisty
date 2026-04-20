@@ -428,9 +428,15 @@ async function spotifyApiRequest<T>(url: string): Promise<T> {
 }
 
 async function searchSmokedopeSongsFromSpotify(query: string): Promise<SpotifySong[]> {
-  const q = encodeURIComponent(`artist:smokedope2016 ${query}`.trim());
-  const url = `${SPOTIFY_API}/search?type=track&limit=25&market=US&q=${q}`;
-  const payload = await spotifyApiRequest<SpotifyTrackSearchResponse>(url);
+  const searchParams = new URLSearchParams({
+    type: 'track',
+    market: 'US',
+    q: `artist:smokedope2016 ${query}`.trim(),
+  });
+
+  const payload = await spotifyApiRequest<SpotifyTrackSearchResponse>(
+    `${SPOTIFY_API}/search?${searchParams.toString()}`
+  );
 
   return payload.tracks.items
     .filter((track) => track.id && track.name)
@@ -652,16 +658,31 @@ export async function searchSmokedopeSongs(query: string): Promise<SpotifySong[]
   const q = query.trim().toLowerCase();
   if (!q) return [];
 
+  // Fast path for search UI: query Spotify's track search directly to avoid
+  // waiting on full catalog hydration during cold starts.
+  try {
+    const directMatches = await searchSmokedopeSongsFromSpotify(q);
+    if (directMatches.length > 0) {
+      return directMatches.slice(0, 25);
+    }
+  } catch (error) {
+    if (isSpotifyAuthError(error)) throw error;
+    console.warn('Direct Spotify search failed, falling back to catalog cache.', error);
+  }
+
   let songs: SpotifySong[];
   try {
     songs = await getAllSmokedopeSongs(false);
   } catch (error) {
-    if (isSpotifyAuthError(error)) {
+    if (isSpotifyAuthError(error)) throw error;
+
+    // If catalog refresh fails and no direct matches were returned, serve stale cache if available.
+    const cachedSongs = globalSpotify.__spotifySongsCache?.songs ?? [];
+    if (cachedSongs.length > 0) {
+      songs = cachedSongs;
+    } else {
       throw error;
     }
-
-    console.warn('Catalog fetch failed during search, falling back to direct Spotify search.', error);
-    return searchSmokedopeSongsFromSpotify(q);
   }
 
   return songs
