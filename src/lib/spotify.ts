@@ -111,6 +111,9 @@ const SONG_DESCRIPTION_VERSION = 3;
 const SPOTIFY_REQUEST_TIMEOUT_MS = 12_000;
 const SPOTIFY_MAX_PAGES = 200;
 const SPOTIFY_AUTH_ERROR_CODE = 'SPOTIFY_AUTH_INVALID';
+const REDIRECT_URI = process.env.NODE_ENV === 'production'
+  ? 'https://www.beadoz.dev/api/songs'
+  : 'http://localhost:3000/api/songs';
 
 const globalSpotify = globalThis as GlobalSpotifyState;
 
@@ -408,28 +411,19 @@ async function getSpotifyAccessToken(forceRefresh = false): Promise<string> {
 }
 
 async function spotifyApiRequest<T>(url: string): Promise<T> {
-  const withAuth = async (token: string): Promise<T> => {
-    return spotifyJson<T>(url, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  };
-
   const token = await getSpotifyAccessToken(false);
 
   try {
-    return await withAuth(token);
+    return await spotifyJson<T>(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
   } catch (error) {
-    if (!isSpotifyUnauthorizedError(error)) throw error;
-
-    const refreshedToken = await getSpotifyAccessToken(true);
-    try {
-      return await withAuth(refreshedToken);
-    } catch (refreshError) {
-      if (isSpotifyUnauthorizedError(refreshError)) {
-        throw new Error(`${SPOTIFY_AUTH_ERROR_CODE}: Spotify API rejected the refreshed access token.`);
-      }
-      throw refreshError;
+    if (isSpotifyUnauthorizedError(error)) {
+      throw new Error(
+        `${SPOTIFY_AUTH_ERROR_CODE}: Spotify API rejected client credentials. Redirect=${REDIRECT_URI}`
+      );
     }
+    throw error;
   }
 }
 

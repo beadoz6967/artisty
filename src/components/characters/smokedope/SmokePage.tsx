@@ -59,7 +59,7 @@ export function SmokePage({ config }: Props) {
       } as React.CSSProperties}
       className="site-shell smoke-shell min-h-screen text-[var(--color-text)]"
     >
-      <section className="smoke-content relative overflow-hidden min-h-[66vh] sm:min-h-[70vh] px-4 sm:px-6 py-12 sm:py-16 md:py-20">
+      <section className="smoke-content relative flex min-h-screen items-center justify-center overflow-hidden px-4 sm:px-6 py-12 sm:py-16 md:py-20">
         <Image
           src="/concert warehouse.jpg"
           alt="smokedope2016 live atmosphere"
@@ -69,7 +69,7 @@ export function SmokePage({ config }: Props) {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#105090]/35 via-black/68 to-[#f04040]/32" />
 
-        <div className="relative z-10 mx-auto max-w-6xl pt-24 md:pt-32">
+        <div className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-center">
           <div className="smoke-glass smoke-panel h-auto min-h-[400px] w-full max-w-3xl border p-10">
             <p className="mono smoke-kicker text-[0.56rem] text-[#b6c7e6]">Signal archive: smokedope2016</p>
             <h1
