@@ -61,6 +61,28 @@ type SpotifyAlbumDetails = {
   tracks: SpotifyAlbumTracksPage;
 };
 
+type SpotifyTrackSearchItem = {
+  id: string;
+  name: string;
+  duration_ms: number;
+  track_number: number;
+  artists: SpotifyArtistRef[];
+  album: {
+    name: string;
+    album_type: 'album' | 'single' | 'compilation' | string;
+    release_date: string;
+    release_date_precision: 'day' | 'month' | 'year' | string;
+    total_tracks: number;
+    images: SpotifyImage[];
+  };
+};
+
+type SpotifyTrackSearchResponse = {
+  tracks: {
+    items: SpotifyTrackSearchItem[];
+  };
+};
+
 type SpotifySongCandidate = SpotifySong & {
   sourceRank: number;
   searchText: string;
@@ -436,7 +458,7 @@ async function spotifyApiRequest<T>(url: string): Promise<T> {
 
     const refreshedToken = await getSpotifyAccessToken(true);
     try {
-      return withAuth(refreshedToken);
+      return await withAuth(refreshedToken);
     } catch (refreshError) {
       if (isSpotifyUnauthorizedError(refreshError)) {
         throw new Error(`${SPOTIFY_AUTH_ERROR_CODE}: Spotify API rejected the refreshed access token.`);
@@ -444,6 +466,56 @@ async function spotifyApiRequest<T>(url: string): Promise<T> {
       throw refreshError;
     }
   }
+}
+
+async function searchSmokedopeSongsFromSpotify(query: string): Promise<SpotifySong[]> {
+  const q = encodeURIComponent(`artist:smokedope2016 ${query}`.trim());
+  const url = `${SPOTIFY_API}/search?type=track&limit=25&market=US&q=${q}`;
+  const payload = await spotifyApiRequest<SpotifyTrackSearchResponse>(url);
+
+  return payload.tracks.items
+    .filter((track) => track.id && track.name)
+    .filter((track) => track.artists.some((artist) => artist.id === SPOTIFY_ARTIST_ID))
+    .map((track) => {
+      const features = track.artists
+        .filter((artist) => artist.id !== SPOTIFY_ARTIST_ID)
+        .map((artist) => artist.name.trim())
+        .filter(Boolean);
+      const dedupedFeatures = [...new Set(features)];
+      const title = track.name.trim();
+      const releaseDate = normalizeReleaseDate(track.album.release_date, track.album.release_date_precision);
+      const durationSecs = Math.max(1, Math.round(track.duration_ms / 1000));
+      const albumCover = track.album.images[0]?.url ?? '';
+      const hasDedicatedSingleCover = track.album.album_type === 'single';
+      const totalTracks = Math.max(track.album.total_tracks || 1, track.track_number || 1);
+
+      return {
+        id: track.id,
+        slug: `${slugify(title)}--${track.id}`,
+        title,
+        features: JSON.stringify(dedupedFeatures),
+        album: track.album.name,
+        year: Number(releaseDate.slice(0, 4)) || 0,
+        releaseDate,
+        durationSecs,
+        singleCover: hasDedicatedSingleCover ? albumCover : null,
+        albumCover,
+        description: buildSongDescription({
+          title,
+          albumName: track.album.name,
+          releaseDate,
+          durationSecs,
+          features: dedupedFeatures,
+          isPrimaryArtist: track.artists[0]?.id === SPOTIFY_ARTIST_ID,
+          trackNumber: Math.max(1, track.track_number || 1),
+          totalTracks,
+          minDurationSecs: durationSecs,
+          maxDurationSecs: durationSecs,
+          avgDurationSecs: durationSecs,
+          hasDedicatedSingleCover,
+        }),
+      };
+    });
 }
 
 async function fetchArtistAlbumSummaries(): Promise<SpotifyAlbumSummary[]> {
@@ -621,7 +693,17 @@ export async function searchSmokedopeSongs(query: string): Promise<SpotifySong[]
   const q = query.trim().toLowerCase();
   if (!q) return [];
 
-  const songs = await getAllSmokedopeSongs(false);
+  let songs: SpotifySong[];
+  try {
+    songs = await getAllSmokedopeSongs(false);
+  } catch (error) {
+    if (isSpotifyAuthError(error)) {
+      throw error;
+    }
+
+    console.warn('Catalog fetch failed during search, falling back to direct Spotify search.', error);
+    return searchSmokedopeSongsFromSpotify(q);
+  }
 
   return songs
     .filter((song) => {
