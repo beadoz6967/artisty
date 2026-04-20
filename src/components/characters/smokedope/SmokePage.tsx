@@ -29,7 +29,7 @@ const peakTracks = [
   'Eastbay',
   'Gnarly',
   'Hypebeast',
-  'Back2Back',
+  'Elite Socks',
 ];
 
 const comedownTracks = [
@@ -71,18 +71,18 @@ export function SmokePage({ config }: Props) {
 
         <div className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-center">
           <div className="smoke-glass smoke-panel h-auto min-h-[400px] w-full max-w-3xl border p-10">
-            <p className="mono smoke-kicker text-[0.56rem] text-[#b6c7e6]">Signal archive: smokedope2016</p>
+            <p className="mono smoke-kicker text-[0.56rem] text-[#b6c7e6] hero-fade-1">Signal archive: smokedope2016</p>
             <h1
               style={{ color: palette.accent }}
-              className="smoke-heading mt-4 max-w-full break-words [overflow-wrap:anywhere] text-[clamp(2rem,10vw,8.5rem)] leading-[0.86] font-black tracking-tight"
+              className="smoke-heading mt-4 max-w-full break-words [overflow-wrap:anywhere] text-[clamp(2rem,10vw,8.5rem)] leading-[0.86] font-black tracking-tight hero-rise-2"
             >
               {displayName}
             </h1>
-            <p className="max-w-2xl text-sm md:text-base text-[#d4d9e5] mt-5">
-              Factual core: Virginia roots, masked presentation, and a trilogy run that defines the current era. Atmosphere layer: blur, low-light flash, and memory-coded internet haze.
+            <p className="max-w-2xl text-sm md:text-base text-[#d4d9e5] mt-5 hero-fade-3">
+              Virginia rapper who quit his welding job in summer 2024 and went full-time. Three albums in two years. Face never shown. The name was his Steam username. The music sounds like 2016 remembered badly.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap gap-3 hero-fade-4">
               {meta.tags.map((tag) => (
                 <span
                   key={tag}
@@ -179,7 +179,7 @@ export function SmokePage({ config }: Props) {
           <p style={{ color: palette.accent }} className="mono smoke-kicker text-[0.56rem]">2024</p>
           <h2 className="smoke-heading text-2xl sm:text-3xl font-black mt-3">THE COMEUP</h2>
           <p className="mt-4 text-sm leading-relaxed text-[#d2d8e6]">
-            First chapter of the trilogy. THE COMEUP establishes the coded grammar: restraint, blur, and internet-memory framing. It reads like a setup tape for what the later chapters make explicit.
+            The first chapter, out May 2024. Thirteen tracks built around a late-night nostalgic haze that becomes the trilogy's signature. Quieter and more restrained than what follows — closer to a mood being established than a statement being made.
           </p>
 
           <div className="smoke-panel mt-6 p-4">
@@ -208,7 +208,7 @@ export function SmokePage({ config }: Props) {
           <p style={{ color: palette.accent }} className="mono smoke-kicker text-[0.56rem]">2025</p>
           <h2 className="smoke-heading text-2xl sm:text-3xl font-black mt-3">THE PEAK</h2>
           <p className="mt-4 text-sm leading-relaxed text-[#d2d8e6]">
-            Middle chapter and breakout pressure point. THE PEAK tightens the production edges while keeping the same masked world. The songs push harder, the audience gets wider, and the mythology scales.
+            Released January 2025, debuted at number nine on the Spotify US album chart. Produced mainly by Lil Fittedcap and Bartesian Water, the sound gets sharper without losing the woozy atmosphere. This is the record that pushed him past a million monthly listeners.
           </p>
 
           <div className="smoke-panel mt-6 p-4">
@@ -237,7 +237,7 @@ export function SmokePage({ config }: Props) {
           <p style={{ color: palette.accent }} className="mono smoke-kicker text-[0.56rem]">2026</p>
           <h2 className="smoke-heading text-2xl sm:text-3xl font-black mt-3">THE COMEDOWN</h2>
           <p className="mt-4 text-sm leading-relaxed text-[#d2d8e6]">
-            Third chapter, post-peak perspective. THE COMEDOWN keeps the same visual code but shifts emotional gravity downward. It feels slower, heavier, and more reflective without leaving the established world.
+            His seventh album and the trilogy closer. The house-leaning production is gone — what's left is slower, darker, and more self-aware. Songs about what comes after the high, not the high itself.
           </p>
 
           <div className="smoke-panel mt-6 p-4">

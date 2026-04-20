@@ -26,38 +26,44 @@ export const smokedope: CharacterConfig = {
     {
       heading: 'Masked signal',
       body:
-        'Public interview framing repeatedly points to hidden identity as part of the project language. ' +
-        'Blurred and obscured imagery is used as design logic: less portrait, more atmosphere.',
+        'Every photo, video, and cover has his face blurred or hidden. He addressed it directly in his first interview — ' +
+        'he wanted to protect people in his life who had other things going on: school, legal exposure, lives outside rap. ' +
+        'The mask is practical as much as it is aesthetic.',
     },
     {
       heading: 'Virginia origin line',
       body:
-        'Interview metadata and platform pages place the run in Virginia while the audience scales online. ' +
-        'The catalog moves like scene dispatches: local roots, internet velocity.',
+        'Grew up in Virginia, worked a welding job until summer 2024, then quit. ' +
+        'Six months later he had a sold-out LA show with over a thousand people in the room. ' +
+        'The internet did most of that work.',
     },
     {
       heading: 'Underground co-sign era',
       body:
-        'Early collaborative links with established underground names helped accelerate discovery. ' +
-        'The profile rise came through networked scenes, not polished mainstream rollout.',
+        'The Joeyy feature on "IM NOT GOD BUT I WISH I WAS" in 2022 was the underground handshake. ' +
+        'From there: Lil Fittedcap on production, Sematary for a Halloween collab, Cole Bennett executive producing the "2016LYFE" video. ' +
+        'Each one opened a different pocket of the internet.',
     },
     {
       heading: 'The trilogy arc',
       body:
-        'THE COMEUP (2024), THE PEAK (2025), and THE COMEDOWN (2026) read as a clean three-act sequence. ' +
-        'Each chapter shifts emotional weight while preserving the same coded visual universe.',
+        'THE COMEUP sets up the world. THE PEAK is where the audience arrived. ' +
+        'THE COMEDOWN is the aftermath — slower, darker, asking what it means when the moment starts to pass. ' +
+        'Three albums, two years, one consistent mask.',
     },
     {
       heading: 'Fairfieldd channel',
       body:
-        'Fairfieldd is read by listeners as a softer parallel lane with heavier emotional framing. ' +
-        'Same orbit, different weather.',
+        'Fairfieldd is his secondary alias — guitar-based beats, emo register, face actually visible in the videos. ' +
+        'He started it in 2022, same year as SMOKESHOP. It sits in Lil Peep territory rather than cloud rap. ' +
+        'Different name, different sound, same person.',
     },
     {
       heading: '2016LYFE grammar',
       body:
-        'Core language is post-SoundCloud nostalgia: grain, blur, low-light flash, and coded captions. ' +
-        'The world should feel remembered and unstable, never sterile.',
+        'The stage name came from his Steam gamertag — his previous one was SwisherSmoker420. ' +
+        'The "2016" part is a timestamp and a mood: it marks the era before everything moved fast. ' +
+        'His music sounds exactly like that year remembered through a haze.',
     },
   ],
 
@@ -66,49 +72,49 @@ export const smokedope: CharacterConfig = {
       title: 'THE COMEDOWN',
       year: 2026,
       tracks: 13,
-      note: 'Third act of the trilogy, written in after-peak tones',
+      note: 'His 7th album. Slower, darker — house influences gone, consequences in.',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/1250897f68ebecf3f2d292b8cdc0438a/640x640-000000-80-0-0.jpg',
     },
     {
       title: 'SLOW DOWN',
       year: 2025,
-      note: 'Single-era extension with Lil Fitted Cap',
+      note: 'Collab with Lil Fittedcap. Reviewed as his most focused and locked-in release.',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/c9a60786288cd3b9e35c02844dc8760c/640x640-000000-80-0-0.jpg',
     },
     {
       title: 'THE PEAK',
       year: 2025,
-      note: 'Middle act and breakout-pressure point',
+      note: 'Debuted #9 Spotify US. Produced by Lil Fittedcap and Bartesian Water.',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/b004c8c39c4f7aef180e34dbe59cde18/640x640-000000-80-0-0.jpg',
     },
     {
       title: 'THE COMEUP',
       year: 2024,
-      note: 'First act that locks in the trilogy blueprint',
+      note: 'Trilogy opener. 13 tracks. Established the sound before it had an audience.',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/23fa0725c20a28ef2dfdf6d173792099/640x640-000000-80-0-0.jpg',
     },
     {
       title: '2016',
       year: 2023,
-      note: 'Pre-trilogy catalog anchor',
+      note: 'Where the cloud rap shift actually happened. Pre-trilogy turning point.',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/7df8570d4580e73204d5d8b25794b772/640x640-000000-80-0-0.jpg',
     },
     {
       title: 'SMOKESHOP 2',
       year: 2023,
-      note: 'Early run continuation',
+      note: 'Continuation of the early trap-adjacent catalog.',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/caeae81dfc4833c782cc96b8b25900fa/640x640-000000-80-0-0.jpg',
     },
     {
       title: 'SMOKESHOP',
       year: 2022,
-      note: 'Early entry point in the public catalog',
+      note: 'First release. Trap and rage-influenced, before the cloud rap identity locked in.',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/ec29a0b3e25f66c06e7fa38288003174/640x640-000000-80-0-0.jpg',
     },
     {
       title: 'XTC',
       year: 2022,
-      note: 'Early melodic marker',
+      note: 'Early EP with a melodic lean. Available on Bandcamp.',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/401933a06dfd6cce4413dc1c469c41f5/640x640-000000-80-0-0.jpg',
     },
   ],
