@@ -70,7 +70,7 @@ export function SmokePage({ config }: Props) {
         <div className="absolute inset-0 bg-gradient-to-b from-[#105090]/35 via-black/68 to-[#f04040]/32" />
 
         <div className="relative z-10 mx-auto max-w-6xl pt-24 md:pt-32">
-          <div className="smoke-glass smoke-panel h-auto max-w-3xl border p-10">
+          <div className="smoke-glass smoke-panel h-auto min-h-[400px] w-full max-w-3xl border p-10">
             <p className="mono smoke-kicker text-[0.56rem] text-[#b6c7e6]">Signal archive: smokedope2016</p>
             <h1
               style={{ color: palette.accent }}

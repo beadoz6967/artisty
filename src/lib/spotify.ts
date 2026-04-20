@@ -111,8 +111,6 @@ const SONG_DESCRIPTION_VERSION = 3;
 const SPOTIFY_REQUEST_TIMEOUT_MS = 12_000;
 const SPOTIFY_MAX_PAGES = 200;
 const SPOTIFY_AUTH_ERROR_CODE = 'SPOTIFY_AUTH_INVALID';
-const PROD_BASE_URL = 'https://www.beadoz.dev';
-const LOCAL_BASE_URL = 'http://localhost:3000';
 
 const globalSpotify = globalThis as GlobalSpotifyState;
 
@@ -282,38 +280,6 @@ function shouldReplaceSong(next: SpotifySongCandidate, current: SpotifySongCandi
   return next.durationSecs > current.durationSecs;
 }
 
-function normalizeBaseUrl(url: string): string {
-  return url.trim().replace(/\/+$/, '');
-}
-
-function getSiteBaseUrl(): string {
-  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim() || process.env.SITE_URL?.trim();
-  if (configured) return normalizeBaseUrl(configured);
-
-  if (process.env.VERCEL_ENV === 'production' || process.env.NODE_ENV === 'production') {
-    return PROD_BASE_URL;
-  }
-
-  return LOCAL_BASE_URL;
-}
-
-export function getSpotifyRedirectUri(): string {
-  const configured = process.env.SPOTIFY_REDIRECT_URI?.trim();
-  const baseUrl = getSiteBaseUrl();
-  if (!configured) return baseUrl;
-
-  try {
-    const parsed = new URL(configured);
-    // This app has no /callback route, so normalize to a working route root.
-    if (parsed.pathname === '/callback' || parsed.pathname === '/callback/') {
-      return baseUrl;
-    }
-    return normalizeBaseUrl(`${parsed.origin}${parsed.pathname}`);
-  } catch {
-    return baseUrl;
-  }
-}
-
 function getErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
@@ -395,7 +361,6 @@ async function spotifyJson<T>(url: string, init?: RequestInit, retries = 2): Pro
 async function getSpotifyAccessToken(forceRefresh = false): Promise<string> {
   const now = Date.now();
   const cached = globalSpotify.__spotifyTokenCache;
-  const redirectUri = getSpotifyRedirectUri();
 
   if (!forceRefresh && cached && cached.expiresAt > now) {
     return cached.token;
@@ -424,7 +389,7 @@ async function getSpotifyAccessToken(forceRefresh = false): Promise<string> {
   } catch (error) {
     if (isSpotifyUnauthorizedError(error)) {
       throw new Error(
-        `${SPOTIFY_AUTH_ERROR_CODE}: Invalid Spotify credentials. Verify SPOTIFY_CLIENT_ID/SPOTIFY_CLIENT_SECRET and set Spotify Redirect URI to ${redirectUri}.`
+        `${SPOTIFY_AUTH_ERROR_CODE}: Invalid Spotify credentials. Verify SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET.`
       );
     }
     throw error;
