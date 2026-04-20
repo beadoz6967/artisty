@@ -26,6 +26,8 @@ function formatDate(iso: string): string {
 export default function SongPage({ song }: { song: Song }) {
   const features: string[] = JSON.parse(song.features);
   const cover = song.singleCover ?? song.albumCover;
+  const description = song.description?.trim() ||
+    `${song.title} appears on ${song.album} (${song.year}). Full archive note is temporarily unavailable, but track metadata is loaded.`;
 
   return (
     <div
@@ -85,16 +87,14 @@ export default function SongPage({ song }: { song: Song }) {
           </div>
         </div>
 
-        {song.description && (
-          <div className="smoke-panel mt-6 max-w-3xl p-4 sm:p-5">
-            <p className="mono text-[0.6rem] uppercase tracking-[0.22em]" style={{ color: palette.accent }}>
-              Archive note
-            </p>
-            <p className="mt-2 text-sm leading-relaxed" style={{ color: '#d4dbea' }}>
-              {song.description}
-            </p>
-          </div>
-        )}
+        <div className="smoke-panel mt-6 max-w-3xl p-4 sm:p-5">
+          <p className="mono text-[0.6rem] uppercase tracking-[0.22em]" style={{ color: palette.accent }}>
+            Archive note
+          </p>
+          <p className="mt-2 text-sm leading-relaxed" style={{ color: '#d4dbea' }}>
+            {description}
+          </p>
+        </div>
       </div>
     </div>
   );

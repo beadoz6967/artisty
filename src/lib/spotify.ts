@@ -83,6 +83,8 @@ type SpotifyTrackSearchResponse = {
   };
 };
 
+type SpotifyTrackDetails = SpotifyTrackSearchItem;
+
 type SpotifySongCandidate = SpotifySong & {
   sourceRank: number;
   searchText: string;
@@ -441,46 +443,60 @@ async function searchSmokedopeSongsFromSpotify(query: string): Promise<SpotifySo
   return payload.tracks.items
     .filter((track) => track.id && track.name)
     .filter((track) => track.artists.some((artist) => artist.id === SPOTIFY_ARTIST_ID))
-    .map((track) => {
-      const features = track.artists
-        .filter((artist) => artist.id !== SPOTIFY_ARTIST_ID)
-        .map((artist) => artist.name.trim())
-        .filter(Boolean);
-      const dedupedFeatures = [...new Set(features)];
-      const title = track.name.trim();
-      const releaseDate = normalizeReleaseDate(track.album.release_date, track.album.release_date_precision);
-      const durationSecs = Math.max(1, Math.round(track.duration_ms / 1000));
-      const albumCover = track.album.images[0]?.url ?? '';
-      const hasDedicatedSingleCover = track.album.album_type === 'single';
-      const totalTracks = Math.max(track.album.total_tracks || 1, track.track_number || 1);
+    .map(mapTrackToSong);
+}
 
-      return {
-        id: track.id,
-        slug: `${slugify(title)}--${track.id}`,
-        title,
-        features: JSON.stringify(dedupedFeatures),
-        album: track.album.name,
-        year: Number(releaseDate.slice(0, 4)) || 0,
-        releaseDate,
-        durationSecs,
-        singleCover: hasDedicatedSingleCover ? albumCover : null,
-        albumCover,
-        description: buildSongDescription({
-          title,
-          albumName: track.album.name,
-          releaseDate,
-          durationSecs,
-          features: dedupedFeatures,
-          isPrimaryArtist: track.artists[0]?.id === SPOTIFY_ARTIST_ID,
-          trackNumber: Math.max(1, track.track_number || 1),
-          totalTracks,
-          minDurationSecs: durationSecs,
-          maxDurationSecs: durationSecs,
-          avgDurationSecs: durationSecs,
-          hasDedicatedSingleCover,
-        }),
-      };
-    });
+function mapTrackToSong(track: SpotifyTrackSearchItem | SpotifyTrackDetails): SpotifySong {
+  const features = track.artists
+    .filter((artist) => artist.id !== SPOTIFY_ARTIST_ID)
+    .map((artist) => artist.name.trim())
+    .filter(Boolean);
+  const dedupedFeatures = [...new Set(features)];
+  const title = track.name.trim();
+  const releaseDate = normalizeReleaseDate(track.album.release_date, track.album.release_date_precision);
+  const durationSecs = Math.max(1, Math.round(track.duration_ms / 1000));
+  const albumCover = track.album.images[0]?.url ?? '';
+  const hasDedicatedSingleCover = track.album.album_type === 'single';
+  const totalTracks = Math.max(track.album.total_tracks || 1, track.track_number || 1);
+
+  return {
+    id: track.id,
+    slug: `${slugify(title)}--${track.id}`,
+    title,
+    features: JSON.stringify(dedupedFeatures),
+    album: track.album.name,
+    year: Number(releaseDate.slice(0, 4)) || 0,
+    releaseDate,
+    durationSecs,
+    singleCover: hasDedicatedSingleCover ? albumCover : null,
+    albumCover,
+    description: buildSongDescription({
+      title,
+      albumName: track.album.name,
+      releaseDate,
+      durationSecs,
+      features: dedupedFeatures,
+      isPrimaryArtist: track.artists[0]?.id === SPOTIFY_ARTIST_ID,
+      trackNumber: Math.max(1, track.track_number || 1),
+      totalTracks,
+      minDurationSecs: durationSecs,
+      maxDurationSecs: durationSecs,
+      avgDurationSecs: durationSecs,
+      hasDedicatedSingleCover,
+    }),
+  };
+}
+
+async function getSongByTrackId(trackId: string): Promise<SpotifySong | null> {
+  if (!trackId) return null;
+
+  const url = `${SPOTIFY_API}/tracks/${encodeURIComponent(trackId)}?market=US`;
+  const track = await spotifyApiRequest<SpotifyTrackDetails>(url);
+
+  if (!track?.id || !track.name) return null;
+  if (!track.artists.some((artist) => artist.id === SPOTIFY_ARTIST_ID)) return null;
+
+  return mapTrackToSong(track);
 }
 
 async function fetchArtistAlbumSummaries(): Promise<SpotifyAlbumSummary[]> {
@@ -698,8 +714,30 @@ export async function searchSmokedopeSongs(query: string): Promise<SpotifySong[]
 }
 
 export async function getSmokedopeSongBySlug(slug: string): Promise<SpotifySong | null> {
-  const songs = await getAllSmokedopeSongs(false);
   const idFromSlug = slug.includes('--') ? slug.split('--').pop() : null;
+
+  if (idFromSlug) {
+    try {
+      const directSong = await getSongByTrackId(idFromSlug);
+      if (directSong) return directSong;
+    } catch (error) {
+      if (isSpotifyAuthError(error)) throw error;
+      console.warn('Direct track lookup failed, trying cached catalog fallback.', error);
+    }
+  }
+
+  let songs: SpotifySong[];
+  try {
+    songs = await getAllSmokedopeSongs(false);
+  } catch (error) {
+    if (isSpotifyAuthError(error)) throw error;
+
+    const cachedSongs = globalSpotify.__spotifySongsCache?.songs ?? [];
+    if (cachedSongs.length === 0) {
+      return null;
+    }
+    songs = cachedSongs;
+  }
 
   if (idFromSlug) {
     const byId = songs.find((song) => song.id === idFromSlug);
