@@ -163,7 +163,7 @@ export function SmokePage({ config }: Props) {
       </section>
 
       {/* THE COMEUP */}
-      <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="smoke-frame relative overflow-hidden aspect-square w-full">
           <Image
             src="https://cdn-images.dzcdn.net/images/cover/23fa0725c20a28ef2dfdf6d173792099/640x640-000000-80-0-0.jpg"
@@ -173,7 +173,7 @@ export function SmokePage({ config }: Props) {
           />
         </div>
 
-        <div className="smoke-panel smoke-glass p-5 sm:p-6">
+        <div className="smoke-panel smoke-glass p-5 sm:p-6 h-full">
           <p style={{ color: palette.accent }} className="mono smoke-kicker text-[0.56rem]">2024</p>
           <h2 className="smoke-heading text-2xl sm:text-3xl font-black mt-3">THE COMEUP</h2>
           <p className="mt-4 text-sm leading-relaxed text-[#d2d8e6]">
@@ -192,7 +192,7 @@ export function SmokePage({ config }: Props) {
       </section>
 
       {/* THE PEAK */}
-      <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="smoke-frame relative overflow-hidden aspect-square w-full">
           <Image
             src="https://cdn-images.dzcdn.net/images/cover/b004c8c39c4f7aef180e34dbe59cde18/640x640-000000-80-0-0.jpg"
@@ -202,7 +202,7 @@ export function SmokePage({ config }: Props) {
           />
         </div>
 
-        <div className="smoke-panel smoke-glass p-5 sm:p-6">
+        <div className="smoke-panel smoke-glass p-5 sm:p-6 h-full">
           <p style={{ color: palette.accent }} className="mono smoke-kicker text-[0.56rem]">2025</p>
           <h2 className="smoke-heading text-2xl sm:text-3xl font-black mt-3">THE PEAK</h2>
           <p className="mt-4 text-sm leading-relaxed text-[#d2d8e6]">
@@ -221,7 +221,7 @@ export function SmokePage({ config }: Props) {
       </section>
 
       {/* THE COMEDOWN */}
-      <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="smoke-frame relative overflow-hidden aspect-square w-full">
           <Image
             src="https://cdn-images.dzcdn.net/images/cover/1250897f68ebecf3f2d292b8cdc0438a/640x640-000000-80-0-0.jpg"
@@ -231,7 +231,7 @@ export function SmokePage({ config }: Props) {
           />
         </div>
 
-        <div className="smoke-panel smoke-glass p-5 sm:p-6">
+        <div className="smoke-panel smoke-glass p-5 sm:p-6 h-full">
           <p style={{ color: palette.accent }} className="mono smoke-kicker text-[0.56rem]">2026</p>
           <h2 className="smoke-heading text-2xl sm:text-3xl font-black mt-3">THE COMEDOWN</h2>
           <p className="mt-4 text-sm leading-relaxed text-[#d2d8e6]">
