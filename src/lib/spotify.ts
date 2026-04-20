@@ -86,6 +86,11 @@ const SPOTIFY_API = 'https://api.spotify.com/v1';
 const TOKEN_SAFETY_BUFFER_MS = 30_000;
 const SONG_CACHE_TTL_MS = 6 * 60 * 60_000;
 const SONG_DESCRIPTION_VERSION = 3;
+const SPOTIFY_REQUEST_TIMEOUT_MS = 12_000;
+const SPOTIFY_MAX_PAGES = 200;
+const SPOTIFY_AUTH_ERROR_CODE = 'SPOTIFY_AUTH_INVALID';
+const PROD_BASE_URL = 'https://www.beadoz.dev';
+const LOCAL_BASE_URL = 'http://localhost:3000';
 
 const globalSpotify = globalThis as GlobalSpotifyState;
 
@@ -255,14 +260,106 @@ function shouldReplaceSong(next: SpotifySongCandidate, current: SpotifySongCandi
   return next.durationSecs > current.durationSecs;
 }
 
-async function spotifyJson<T>(url: string, init?: RequestInit, retries = 6): Promise<T> {
-  const response = await fetch(url, init);
+function normalizeBaseUrl(url: string): string {
+  return url.trim().replace(/\/+$/, '');
+}
+
+function getSiteBaseUrl(): string {
+  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim() || process.env.SITE_URL?.trim();
+  if (configured) return normalizeBaseUrl(configured);
+
+  if (process.env.VERCEL_ENV === 'production' || process.env.NODE_ENV === 'production') {
+    return PROD_BASE_URL;
+  }
+
+  return LOCAL_BASE_URL;
+}
+
+export function getSpotifyRedirectUri(): string {
+  const configured = process.env.SPOTIFY_REDIRECT_URI?.trim();
+  const baseUrl = getSiteBaseUrl();
+  if (!configured) return baseUrl;
+
+  try {
+    const parsed = new URL(configured);
+    // This app has no /callback route, so normalize to a working route root.
+    if (parsed.pathname === '/callback' || parsed.pathname === '/callback/') {
+      return baseUrl;
+    }
+    return normalizeBaseUrl(`${parsed.origin}${parsed.pathname}`);
+  } catch {
+    return baseUrl;
+  }
+}
+
+function getErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+function isSpotifyUnauthorizedError(error: unknown): boolean {
+  const message = getErrorMessage(error).toLowerCase();
+  return message.includes('spotify unauthorized (401)') || message.includes('(401)');
+}
+
+function createTimeoutSignal(timeoutMs: number, parentSignal?: AbortSignal): {
+  signal: AbortSignal;
+  cleanup: () => void;
+} {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  const onParentAbort = () => controller.abort();
+
+  if (parentSignal) {
+    if (parentSignal.aborted) {
+      controller.abort();
+    } else {
+      parentSignal.addEventListener('abort', onParentAbort, { once: true });
+    }
+  }
+
+  return {
+    signal: controller.signal,
+    cleanup: () => {
+      clearTimeout(timeoutId);
+      if (parentSignal) {
+        parentSignal.removeEventListener('abort', onParentAbort);
+      }
+    },
+  };
+}
+
+export function isSpotifyAuthError(error: unknown): boolean {
+  return getErrorMessage(error).includes(SPOTIFY_AUTH_ERROR_CODE);
+}
+
+async function spotifyJson<T>(url: string, init?: RequestInit, retries = 2): Promise<T> {
+  const { signal, cleanup } = createTimeoutSignal(SPOTIFY_REQUEST_TIMEOUT_MS, init?.signal ?? undefined);
+  let response: Response;
+
+  try {
+    response = await fetch(url, {
+      ...init,
+      signal,
+    });
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error(`Spotify request timed out after ${SPOTIFY_REQUEST_TIMEOUT_MS}ms: ${url}`);
+    }
+    throw error;
+  } finally {
+    cleanup();
+  }
 
   if (response.status === 429 && retries > 0) {
     const retryAfterHeader = Number(response.headers.get('retry-after') || '0');
-    const retryAfter = retryAfterHeader > 0 ? retryAfterHeader : 2;
+    const retryAfter = retryAfterHeader > 0 ? Math.min(retryAfterHeader, 2) : 1;
     await new Promise((resolve) => setTimeout(resolve, retryAfter * 1000));
     return spotifyJson<T>(url, init, retries - 1);
+  }
+
+  if (response.status === 401) {
+    const text = await response.text();
+    throw new Error(`Spotify unauthorized (401): ${text}`);
   }
 
   if (!response.ok) {
@@ -276,6 +373,7 @@ async function spotifyJson<T>(url: string, init?: RequestInit, retries = 6): Pro
 async function getSpotifyAccessToken(forceRefresh = false): Promise<string> {
   const now = Date.now();
   const cached = globalSpotify.__spotifyTokenCache;
+  const redirectUri = getSpotifyRedirectUri();
 
   if (!forceRefresh && cached && cached.expiresAt > now) {
     return cached.token;
@@ -291,14 +389,28 @@ async function getSpotifyAccessToken(forceRefresh = false): Promise<string> {
   const auth = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
   const body = new URLSearchParams({ grant_type: 'client_credentials' });
 
-  const tokenPayload = await spotifyJson<{ access_token: string; expires_in: number }>(SPOTIFY_ACCOUNTS, {
-    method: 'POST',
-    headers: {
-      Authorization: `Basic ${auth}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body,
-  });
+  let tokenPayload: { access_token: string; expires_in: number };
+  try {
+    tokenPayload = await spotifyJson<{ access_token: string; expires_in: number }>(SPOTIFY_ACCOUNTS, {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${auth}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body,
+    });
+  } catch (error) {
+    if (isSpotifyUnauthorizedError(error)) {
+      throw new Error(
+        `${SPOTIFY_AUTH_ERROR_CODE}: Invalid Spotify credentials. Verify SPOTIFY_CLIENT_ID/SPOTIFY_CLIENT_SECRET and set Spotify Redirect URI to ${redirectUri}.`
+      );
+    }
+    throw error;
+  }
+
+  if (!tokenPayload.access_token) {
+    throw new Error(`${SPOTIFY_AUTH_ERROR_CODE}: Spotify token response is missing access_token.`);
+  }
 
   globalSpotify.__spotifyTokenCache = {
     token: tokenPayload.access_token,
@@ -320,26 +432,43 @@ async function spotifyApiRequest<T>(url: string): Promise<T> {
   try {
     return await withAuth(token);
   } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    if (!message.includes('(401)')) throw error;
+    if (!isSpotifyUnauthorizedError(error)) throw error;
 
     const refreshedToken = await getSpotifyAccessToken(true);
-    return withAuth(refreshedToken);
+    try {
+      return withAuth(refreshedToken);
+    } catch (refreshError) {
+      if (isSpotifyUnauthorizedError(refreshError)) {
+        throw new Error(`${SPOTIFY_AUTH_ERROR_CODE}: Spotify API rejected the refreshed access token.`);
+      }
+      throw refreshError;
+    }
   }
 }
 
 async function fetchArtistAlbumSummaries(): Promise<SpotifyAlbumSummary[]> {
   const albums = new Map<string, SpotifyAlbumSummary>();
   let nextUrl: string | null = `${SPOTIFY_API}/artists/${SPOTIFY_ARTIST_ID}/albums?include_groups=album,single,appears_on&market=US`;
+  let pageCount = 0;
 
   while (nextUrl) {
-    const page: SpotifyArtistAlbumsPage = await spotifyApiRequest<SpotifyArtistAlbumsPage>(nextUrl);
+    pageCount += 1;
+    if (pageCount > SPOTIFY_MAX_PAGES) {
+      throw new Error(`Spotify album pagination exceeded ${SPOTIFY_MAX_PAGES} pages.`);
+    }
+
+    const currentUrl: string = nextUrl;
+    const page: SpotifyArtistAlbumsPage = await spotifyApiRequest<SpotifyArtistAlbumsPage>(currentUrl);
     for (const item of page.items) {
       if (!albums.has(item.id)) {
         albums.set(item.id, item);
       }
     }
+
     nextUrl = page.next;
+    if (nextUrl && nextUrl === currentUrl) {
+      throw new Error('Spotify album pagination returned a repeated next URL.');
+    }
   }
 
   return Array.from(albums.values());
@@ -349,11 +478,21 @@ async function fetchAlbumDetailsWithAllTracks(albumId: string): Promise<SpotifyA
   const album = await spotifyApiRequest<SpotifyAlbumDetails>(`${SPOTIFY_API}/albums/${albumId}?market=US`);
   const allTracks = [...album.tracks.items];
 
-  let nextUrl = album.tracks.next;
+  let nextUrl: string | null = album.tracks.next;
+  let pageCount = 0;
   while (nextUrl) {
-    const trackPage: SpotifyAlbumTracksPage = await spotifyApiRequest<SpotifyAlbumTracksPage>(nextUrl);
+    pageCount += 1;
+    if (pageCount > SPOTIFY_MAX_PAGES) {
+      throw new Error(`Spotify track pagination exceeded ${SPOTIFY_MAX_PAGES} pages for album ${albumId}.`);
+    }
+
+    const currentUrl: string = nextUrl;
+    const trackPage: SpotifyAlbumTracksPage = await spotifyApiRequest<SpotifyAlbumTracksPage>(currentUrl);
     allTracks.push(...trackPage.items);
     nextUrl = trackPage.next;
+    if (nextUrl && nextUrl === currentUrl) {
+      throw new Error(`Spotify track pagination returned a repeated next URL for album ${albumId}.`);
+    }
   }
 
   return { ...album, allTracks };
