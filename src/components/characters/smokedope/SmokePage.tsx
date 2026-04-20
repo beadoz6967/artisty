@@ -288,11 +288,24 @@ export function SmokePage({ config }: Props) {
             {gallery
               .sort((a, b) => (b.year ?? 0) - (a.year ?? 0))
               .map((item) => (
-                <article key={item.title} className="smoke-panel p-2">
+                <article
+                  key={item.title}
+                  className="smoke-panel p-2 group cursor-pointer transition-transform duration-300 ease-out hover:-translate-y-1"
+                  style={{ willChange: 'transform' }}
+                >
                   <div className="smoke-frame relative aspect-square overflow-hidden">
-                    <Image src={item.image} alt={item.title} fill className="object-cover" sizes="240px" />
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover transition-[transform,filter] duration-300 ease-out group-hover:scale-110 group-hover:brightness-110"
+                      sizes="240px"
+                    />
+                    {/* Colour wash on hover */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                      style={{ background: 'linear-gradient(135deg, rgba(240,64,64,0.18), rgba(16,80,144,0.22))' }} />
                   </div>
-                  <p className="text-xs mt-2 text-[#e4e9f2] truncate">{item.title}</p>
+                  <p className="text-xs mt-2 text-[#e4e9f2] truncate transition-colors duration-200 group-hover:text-white">{item.title}</p>
                   {item.year && <p className="mono text-[0.62rem] text-[#b4c2dc] mt-1">{item.year}</p>}
                 </article>
               ))}
