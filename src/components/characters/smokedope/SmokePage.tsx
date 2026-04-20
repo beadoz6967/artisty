@@ -105,14 +105,12 @@ export function SmokePage({ config }: Props) {
         ))}
       </section>
 
-      <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-10 sm:py-12 grid grid-cols-1 lg:grid-cols-5 gap-8">
-        <div className="lg:col-span-2 lg:self-start lg:sticky lg:top-[68px]">
-          <p style={{ color: palette.accent }} className="mono smoke-kicker text-[0.56rem]">Persona map</p>
-          <h2 className="smoke-heading text-2xl sm:text-3xl font-black mt-3">How the signal is built</h2>
-        </div>
+      <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-10 sm:py-12">
+        <p style={{ color: palette.accent }} className="mono smoke-kicker text-[0.56rem]">Persona map</p>
+        <h2 className="smoke-heading text-2xl sm:text-3xl font-black mt-3 mb-8">How the signal is built</h2>
 
-        <div className="lg:col-span-3 space-y-8">
-          {lore.slice(0, 4).map((block) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {lore.map((block) => (
             <article key={block.heading} className="smoke-panel border-l-2 border-l-[#f04040] p-4 sm:p-5">
               <h3 style={{ color: palette.accent }} className="mono text-[0.65rem] uppercase tracking-[0.22em]">
                 {block.heading}
