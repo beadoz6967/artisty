@@ -59,7 +59,7 @@ export function SmokePage({ config }: Props) {
       } as React.CSSProperties}
       className="site-shell smoke-shell min-h-screen text-[var(--color-text)]"
     >
-      <section className="smoke-content relative flex min-h-screen items-center justify-center overflow-hidden px-4 sm:px-6 py-12 sm:py-16 md:py-20">
+      <section className="smoke-content relative flex min-h-[calc(100vh-52px)] items-center justify-center overflow-hidden px-4 sm:px-6 py-12 sm:py-16 md:py-20">
         <Image
           src="/concert warehouse.jpg"
           alt="smokedope2016 live atmosphere"
@@ -96,7 +96,7 @@ export function SmokePage({ config }: Props) {
         </div>
       </section>
 
-      <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {highlights.map((item) => (
           <article key={item.label} className="smoke-panel smoke-glass p-4">
             <p className="mono text-[0.54rem] uppercase tracking-[0.25em] text-[#a9bbd8]">{item.label}</p>
@@ -106,7 +106,7 @@ export function SmokePage({ config }: Props) {
       </section>
 
       <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-10 sm:py-12 grid grid-cols-1 lg:grid-cols-5 gap-8">
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2 lg:self-start lg:sticky lg:top-[68px]">
           <p style={{ color: palette.accent }} className="mono smoke-kicker text-[0.56rem]">Persona map</p>
           <h2 className="smoke-heading text-2xl sm:text-3xl font-black mt-3">How the signal is built</h2>
         </div>
@@ -166,7 +166,7 @@ export function SmokePage({ config }: Props) {
 
       {/* THE COMEUP */}
       <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <div className="smoke-frame relative overflow-hidden aspect-square">
+        <div className="smoke-frame relative overflow-hidden aspect-square w-full">
           <Image
             src="https://cdn-images.dzcdn.net/images/cover/23fa0725c20a28ef2dfdf6d173792099/640x640-000000-80-0-0.jpg"
             alt="THE COMEUP cover"
@@ -195,7 +195,7 @@ export function SmokePage({ config }: Props) {
 
       {/* THE PEAK */}
       <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <div className="smoke-frame relative overflow-hidden aspect-square">
+        <div className="smoke-frame relative overflow-hidden aspect-square w-full">
           <Image
             src="https://cdn-images.dzcdn.net/images/cover/b004c8c39c4f7aef180e34dbe59cde18/640x640-000000-80-0-0.jpg"
             alt="THE PEAK cover"
@@ -224,7 +224,7 @@ export function SmokePage({ config }: Props) {
 
       {/* THE COMEDOWN */}
       <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <div className="smoke-frame relative overflow-hidden aspect-square">
+        <div className="smoke-frame relative overflow-hidden aspect-square w-full">
           <Image
             src="https://cdn-images.dzcdn.net/images/cover/1250897f68ebecf3f2d292b8cdc0438a/640x640-000000-80-0-0.jpg"
             alt="THE COMEDOWN cover"
@@ -252,7 +252,7 @@ export function SmokePage({ config }: Props) {
       </section>
 
       {gallery && gallery.length > 0 && (
-        <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-16">
+        <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14">
           <p style={{ color: palette.accent }} className="mono smoke-kicker text-[0.56rem]">Projects</p>
           <h2 className="smoke-heading text-2xl sm:text-3xl font-black mt-3">Cover archive</h2>
 
