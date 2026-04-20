@@ -184,7 +184,7 @@ export function SmokePage({ config }: Props) {
 
       {/* THE COMEUP */}
       <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="smoke-frame relative overflow-hidden aspect-square w-full">
+        <div className="smoke-frame relative overflow-hidden w-full h-full min-h-[320px]">
           <Image
             src="https://cdn-images.dzcdn.net/images/cover/23fa0725c20a28ef2dfdf6d173792099/640x640-000000-80-0-0.jpg"
             alt="THE COMEUP cover"
@@ -217,7 +217,7 @@ export function SmokePage({ config }: Props) {
 
       {/* THE PEAK */}
       <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="smoke-frame relative overflow-hidden aspect-square w-full">
+        <div className="smoke-frame relative overflow-hidden w-full h-full min-h-[320px]">
           <Image
             src="https://cdn-images.dzcdn.net/images/cover/b004c8c39c4f7aef180e34dbe59cde18/640x640-000000-80-0-0.jpg"
             alt="THE PEAK cover"
@@ -249,7 +249,7 @@ export function SmokePage({ config }: Props) {
 
       {/* THE COMEDOWN */}
       <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="smoke-frame relative overflow-hidden aspect-square w-full">
+        <div className="smoke-frame relative overflow-hidden w-full h-full min-h-[320px]">
           <Image
             src="https://cdn-images.dzcdn.net/images/cover/1250897f68ebecf3f2d292b8cdc0438a/640x640-000000-80-0-0.jpg"
             alt="THE COMEDOWN cover"
