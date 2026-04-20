@@ -28,18 +28,32 @@ export default function SongPage({ song }: { song: Song }) {
   const cover = song.singleCover ?? song.albumCover;
 
   return (
-    <div style={{ background: palette.bg, color: palette.text, minHeight: '100vh' }}>
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+    <div
+      style={{
+        '--color-bg': palette.bg,
+        '--color-surface': palette.surface,
+        '--color-accent': palette.accent,
+        '--color-text': palette.text,
+        '--color-muted': palette.muted,
+        '--color-border': palette.border,
+        background: palette.bg,
+        color: palette.text,
+        minHeight: '100vh',
+      } as React.CSSProperties}
+      className="smoke-song-shell"
+    >
+      <div className="smoke-content mx-auto max-w-4xl px-4 sm:px-6 py-10 sm:py-12">
         <Link
           href="/smokedope2016"
-          className="text-xs uppercase tracking-widest hover:opacity-70 transition-opacity"
-          style={{ color: palette.muted }}
+          className="mono text-xs uppercase tracking-widest transition-opacity hover:opacity-80"
+          style={{ color: '#c2d0e6' }}
         >
           ← back to smokedope2016 archive
         </Link>
 
-        <div className="mt-8 flex flex-col sm:flex-row gap-8">
-          <div className="flex-shrink-0">
+        <div className="smoke-panel smoke-glass mt-6 border p-4 sm:p-6">
+          <div className="flex flex-col gap-6 sm:flex-row sm:gap-8">
+            <div className="smoke-frame flex-shrink-0 overflow-hidden border">
             <Image
               src={cover}
               alt={song.title}
@@ -48,34 +62,35 @@ export default function SongPage({ song }: { song: Song }) {
               className="object-cover"
               unoptimized
             />
-          </div>
+            </div>
 
-          <div className="flex flex-col gap-2">
-            <p className="text-xs uppercase tracking-widest" style={{ color: palette.accent }}>
-              {song.album} · {song.year}
-            </p>
-            <h1 className="text-3xl sm:text-4xl font-black leading-tight" style={{ color: palette.text }}>
-              {song.title}
-            </h1>
-            {features.length > 0 && (
-              <p className="text-sm" style={{ color: palette.muted }}>
-                feature signal: {features.join(', ')}
+            <div className="flex flex-col gap-2">
+              <p className="mono text-xs uppercase tracking-[0.24em]" style={{ color: '#bfd0ea' }}>
+                {song.album} · {song.year}
               </p>
-            )}
+              <h1 className="smoke-heading text-3xl font-black leading-tight sm:text-4xl" style={{ color: palette.text }}>
+                {song.title}
+              </h1>
+              {features.length > 0 && (
+                <p className="mono text-sm uppercase tracking-[0.08em]" style={{ color: '#cad6eb' }}>
+                  feature signal: {features.join(', ')}
+                </p>
+              )}
 
-            <div className="mt-4 space-y-1 text-sm" style={{ color: palette.muted }}>
-              <p><span style={{ color: palette.text }}>Release date</span> {formatDate(song.releaseDate)}</p>
-              <p><span style={{ color: palette.text }}>Runtime</span> {formatDuration(song.durationSecs)}</p>
+              <div className="smoke-panel mt-4 space-y-1 p-3 text-sm" style={{ color: '#d3dbeb' }}>
+                <p><span style={{ color: '#f2f6ff' }}>Release date</span> {formatDate(song.releaseDate)}</p>
+                <p><span style={{ color: '#f2f6ff' }}>Runtime</span> {formatDuration(song.durationSecs)}</p>
+              </div>
             </div>
           </div>
         </div>
 
         {song.description && (
-          <div className="mt-10 max-w-2xl">
-            <p className="text-[0.6rem] uppercase tracking-[0.22em]" style={{ color: palette.accent }}>
+          <div className="smoke-panel mt-6 max-w-3xl p-4 sm:p-5">
+            <p className="mono text-[0.6rem] uppercase tracking-[0.22em]" style={{ color: palette.accent }}>
               Archive note
             </p>
-            <p className="mt-2 text-sm leading-relaxed" style={{ color: palette.muted }}>
+            <p className="mt-2 text-sm leading-relaxed" style={{ color: '#d4dbea' }}>
               {song.description}
             </p>
           </div>
