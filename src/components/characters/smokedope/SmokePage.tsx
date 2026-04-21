@@ -95,7 +95,7 @@ export function SmokePage({ config }: Props) {
             <p className="mono smoke-kicker text-[0.56rem] text-[#b6c7e6] hero-fade-1">Signal archive: smokedope2016</p>
             <h1
               style={{ color: palette.accent }}
-              className="smoke-heading mt-4 max-w-full break-words [overflow-wrap:anywhere] text-[clamp(2rem,10vw,8.5rem)] leading-[0.86] font-black tracking-tight hero-rise-2"
+              className="smoke-heading mt-4 max-w-full break-words [overflow-wrap:anywhere] text-[clamp(2rem,7vw,4.5rem)] leading-[1] font-black tracking-tight hero-rise-2"
             >
               {displayName}
             </h1>
