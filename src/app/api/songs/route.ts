@@ -23,8 +23,6 @@ function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
 }
 
 export async function GET(req: NextRequest) {
-  console.log('Using ID:', process.env.SPOTIFY_CLIENT_ID?.slice(0,5));
-
   const q = req.nextUrl.searchParams.get('q')?.trim();
   if (!q) return NextResponse.json([]);
 

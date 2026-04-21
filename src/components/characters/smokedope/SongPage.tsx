@@ -55,15 +55,14 @@ export default function SongPage({ song }: { song: Song }) {
 
         <div className="smoke-panel smoke-glass mt-6 border p-4 sm:p-6">
           <div className="flex flex-col gap-6 sm:flex-row sm:gap-8">
-            <div className="smoke-frame flex-shrink-0 overflow-hidden border">
-            <Image
-              src={cover}
-              alt={song.title}
-              width={280}
-              height={280}
-              className="object-cover"
-              unoptimized
-            />
+            <div className="smoke-frame relative w-full sm:w-[280px] flex-shrink-0 overflow-hidden border aspect-square">
+              <Image
+                src={cover}
+                alt={song.title}
+                fill
+                className="object-cover"
+                unoptimized
+              />
             </div>
 
             <div className="flex flex-col gap-2">

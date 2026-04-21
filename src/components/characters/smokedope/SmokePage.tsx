@@ -80,7 +80,7 @@ export function SmokePage({ config }: Props) {
       } as React.CSSProperties}
       className="site-shell smoke-shell min-h-screen text-[var(--color-text)]"
     >
-      <section className="smoke-content relative flex min-h-[calc(100vh-52px)] items-center justify-center overflow-hidden px-4 sm:px-6 py-12 sm:py-16 md:py-20">
+      <section className="smoke-content relative flex min-h-[60vh] sm:min-h-[calc(100vh-52px)] items-center justify-center overflow-hidden px-4 sm:px-6 py-10 sm:py-16 md:py-20">
         <Image
           src="/concert warehouse.jpg"
           alt="smokedope2016 live atmosphere"
@@ -91,7 +91,7 @@ export function SmokePage({ config }: Props) {
         <div className="absolute inset-0 bg-gradient-to-b from-[#105090]/35 via-black/68 to-[#f04040]/32" />
 
         <div className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-center">
-          <div className="smoke-glass smoke-panel h-auto min-h-[400px] w-full max-w-3xl border p-10">
+          <div className="smoke-glass smoke-panel h-auto min-h-0 sm:min-h-[400px] w-full max-w-3xl border p-5 sm:p-8 md:p-10">
             <p className="mono smoke-kicker text-[0.56rem] text-[#b6c7e6] hero-fade-1">Signal archive: smokedope2016</p>
             <h1
               style={{ color: palette.accent }}
@@ -117,7 +117,7 @@ export function SmokePage({ config }: Props) {
         </div>
       </section>
 
-      <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {highlights.map((item) => (
           <article key={item.label} className="smoke-panel smoke-glass p-4">
             <p className="mono text-[0.54rem] uppercase tracking-[0.25em] text-[#a9bbd8]">{item.label}</p>
@@ -185,7 +185,7 @@ export function SmokePage({ config }: Props) {
 
       {/* THE COMEUP */}
       <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="smoke-frame relative overflow-hidden w-full h-full min-h-[320px]">
+        <div className="smoke-frame relative overflow-hidden w-full h-full min-h-[200px] sm:min-h-[320px]">
           <Image
             src="https://cdn-images.dzcdn.net/images/cover/23fa0725c20a28ef2dfdf6d173792099/640x640-000000-80-0-0.jpg"
             alt="THE COMEUP cover"
@@ -218,7 +218,7 @@ export function SmokePage({ config }: Props) {
 
       {/* THE PEAK */}
       <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="smoke-frame relative overflow-hidden w-full h-full min-h-[320px]">
+        <div className="smoke-frame relative overflow-hidden w-full h-full min-h-[200px] sm:min-h-[320px]">
           <Image
             src="https://cdn-images.dzcdn.net/images/cover/b004c8c39c4f7aef180e34dbe59cde18/640x640-000000-80-0-0.jpg"
             alt="THE PEAK cover"
@@ -250,7 +250,7 @@ export function SmokePage({ config }: Props) {
 
       {/* THE COMEDOWN */}
       <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="smoke-frame relative overflow-hidden w-full h-full min-h-[320px]">
+        <div className="smoke-frame relative overflow-hidden w-full h-full min-h-[200px] sm:min-h-[320px]">
           <Image
             src="https://cdn-images.dzcdn.net/images/cover/1250897f68ebecf3f2d292b8cdc0438a/640x640-000000-80-0-0.jpg"
             alt="THE COMEDOWN cover"

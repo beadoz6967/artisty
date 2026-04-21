@@ -46,7 +46,7 @@ function PinnedApp({
       href={href}
       onMouseMove={onMouseMove}
       onMouseLeave={() => setGlow(null)}
-      className="aero-pinned-app relative flex flex-col justify-center px-4 py-2 min-w-[120px] h-full overflow-hidden select-none"
+      className="aero-pinned-app relative flex flex-col justify-center px-2 sm:px-4 py-2 min-w-[80px] sm:min-w-[120px] h-full overflow-hidden select-none"
     >
       {/* Character background bleed */}
       {bgImage && (
@@ -127,7 +127,7 @@ function PinnedApp({
 function SystemTray() {
   return (
     <div
-      className="flex items-center gap-2.5 px-3 h-full border-l border-white/[0.08] shrink-0"
+      className="hidden sm:flex items-center gap-2.5 px-3 h-full border-l border-white/[0.08] shrink-0"
       style={{ fontFamily: "'Segoe UI', Tahoma, sans-serif" }}
     >
       {/* WiFi icon */}

@@ -18,7 +18,7 @@ const mono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: 'Artisty // Signal & Smoke',
-  description: 'Dual-world showcase: Matt Murdock and smokedope2016.',
+  description: 'Signal & Smoke — the smokedope2016 archive.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
