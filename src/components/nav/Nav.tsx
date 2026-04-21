@@ -65,7 +65,7 @@ function PinnedApp({
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: `radial-gradient(circle 64px at ${glow.x}px ${glow.y}px, rgba(255,255,255,0.13), transparent 70%)`,
+            background: `radial-gradient(circle 90px at ${glow.x}px ${glow.y}px, rgba(255,255,255,0.15), transparent 70%)`,
           }}
         />
       )}
@@ -181,9 +181,22 @@ function SystemTray() {
 
 export function Nav() {
   const pathname = usePathname();
+  const [navOpacity, setNavOpacity] = useState(1);
+
+  useEffect(() => {
+    function onScroll() {
+      const y = window.scrollY;
+      setNavOpacity(Math.max(0.45, 1 - y / 150));
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
-    <nav className="aero-taskbar sticky top-0 z-50">
+    <nav
+      className="aero-taskbar sticky top-0 z-50"
+      style={{ opacity: navOpacity, transition: 'opacity 200ms ease' }}
+    >
       {/* Gloss overlay */}
       <div
         className="absolute inset-0 pointer-events-none z-0"
@@ -197,7 +210,7 @@ export function Nav() {
         {/* Start orb */}
         <div className="flex items-center px-2.5 border-r border-white/[0.08] shrink-0">
           <div
-            className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer"
+            className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform duration-200"
             style={{
               background:
                 'radial-gradient(circle at 38% 32%, rgba(120,180,255,0.92), rgba(18,72,200,0.88))',
