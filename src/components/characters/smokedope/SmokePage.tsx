@@ -38,7 +38,7 @@ function AlbumSection({ entry, palette, index }: AlbumSectionProps) {
   const sectionDelay = 80 + index * 80;
 
   return (
-    <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8">
+    <section className="smoke-content smoke-virtualized mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8">
       <div
         className="smoke-frame smoke-reveal relative overflow-hidden w-full h-full min-h-[200px] sm:min-h-[320px]"
         style={{ ...revealDelay(index, sectionDelay, 0) }}
@@ -107,6 +107,7 @@ export function SmokePage({ config }: Props) {
           alt="smokedope2016 live atmosphere"
           fill
           priority
+          sizes="100vw"
           className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#105090]/35 via-black/68 to-[#f04040]/32" />
@@ -139,7 +140,7 @@ export function SmokePage({ config }: Props) {
         </div>
       </section>
 
-      <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <section className="smoke-content smoke-virtualized mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {(highlights ?? []).map((item, idx) => (
           <article
             key={item.label}
@@ -152,7 +153,7 @@ export function SmokePage({ config }: Props) {
         ))}
       </section>
 
-      <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-10 sm:py-12">
+      <section className="smoke-content smoke-virtualized mx-auto max-w-6xl px-4 sm:px-6 py-10 sm:py-12">
         <p style={{ color: palette.accent, ...revealDelay(0, 110, 0) }} className="mono smoke-kicker smoke-reveal text-[0.56rem]">Persona map</p>
         <h2 className="smoke-heading smoke-reveal text-2xl sm:text-3xl font-black mt-3 mb-8" style={revealDelay(0, 190, 0)}>How the signal is built</h2>
 
@@ -172,7 +173,7 @@ export function SmokePage({ config }: Props) {
         </div>
       </section>
 
-      <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14">
+      <section className="smoke-content smoke-virtualized mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14">
         <p style={{ color: palette.accent, ...revealDelay(0, 100, 0) }} className="mono smoke-kicker smoke-reveal text-[0.56rem]">Song vault</p>
         <h2 className="smoke-heading smoke-reveal text-2xl sm:text-3xl font-black mt-3" style={revealDelay(0, 180, 0)}>Search the full catalog</h2>
         <div className="smoke-panel smoke-glass smoke-reveal mt-6 max-w-lg p-4" style={revealDelay(0, 260, 0)}>
@@ -180,7 +181,7 @@ export function SmokePage({ config }: Props) {
         </div>
       </section>
 
-      <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14">
+      <section className="smoke-content smoke-virtualized mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14">
         <p style={{ color: palette.accent, ...revealDelay(0, 100, 0) }} className="mono smoke-kicker smoke-reveal text-[0.56rem]">Discography timeline</p>
         <h2 className="smoke-heading smoke-reveal text-2xl sm:text-3xl font-black mt-3" style={revealDelay(0, 190, 0)}>Timeline: official releases</h2>
 
@@ -198,7 +199,13 @@ export function SmokePage({ config }: Props) {
               </div>
               {entry.coverArt ? (
                 <div className="smoke-frame relative aspect-square w-[72px] sm:w-[88px] md:w-[112px] overflow-hidden">
-                  <Image src={entry.coverArt} alt={`${entry.title} cover`} fill className="object-cover" sizes="112px" />
+                  <Image
+                    src={entry.coverArt}
+                    alt={`${entry.title} cover`}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 72px, (max-width: 768px) 88px, 112px"
+                  />
                 </div>
               ) : (
                 <div className="smoke-frame aspect-square w-[72px] sm:w-[88px] md:w-[112px] bg-[var(--color-card)]" />
@@ -213,7 +220,7 @@ export function SmokePage({ config }: Props) {
       ))}
 
       {gallery && gallery.length > 0 && (
-        <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14">
+        <section className="smoke-content smoke-virtualized mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14">
           <p style={{ color: palette.accent, ...revealDelay(0, 100, 0) }} className="mono smoke-kicker smoke-reveal text-[0.56rem]">Projects</p>
           <h2 className="smoke-heading smoke-reveal text-2xl sm:text-3xl font-black mt-3" style={revealDelay(0, 180, 0)}>Cover archive</h2>
 
@@ -224,7 +231,7 @@ export function SmokePage({ config }: Props) {
                 <article
                   key={item.title}
                   className="smoke-panel smoke-reveal-plate p-2 group transition-transform duration-300 ease-out hover:-translate-y-1"
-                  style={{ ...revealDelay(idx, 260, 55), willChange: 'transform' }}
+                  style={revealDelay(idx, 260, 55)}
                 >
                   <div className="smoke-frame relative aspect-square overflow-hidden">
                     <Image
@@ -232,8 +239,7 @@ export function SmokePage({ config }: Props) {
                       alt={item.title}
                       fill
                       className="object-cover transition-transform duration-300 ease-out group-hover:scale-110"
-                      style={{ willChange: 'transform' }}
-                      sizes="240px"
+                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 240px"
                     />
                     <div
                       className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
