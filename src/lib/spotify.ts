@@ -90,9 +90,17 @@ type SpotifySongCandidate = SpotifySong & {
   searchText: string;
 };
 
+type SpotifyArtistProfile = {
+  id: string;
+  name: string;
+  searchAlias: string;
+};
+
 export type SpotifySong = {
   id: string;
   slug: string;
+  artistId: string;
+  artistName: string;
   title: string;
   features: string;
   album: string;
@@ -104,7 +112,11 @@ export type SpotifySong = {
   description: string;
 };
 
-const SPOTIFY_ARTIST_ID = '3hGJ4nHdF99Vs0gQdXz5Nw';
+const SPOTIFY_ARTISTS: SpotifyArtistProfile[] = [
+  { id: '3hGJ4nHdF99Vs0gQdXz5Nw', name: 'smokedope2016', searchAlias: 'smokedope2016' },
+  { id: '4cU0G68jJW0mhUGcrUiQ93', name: 'Fairfieldd', searchAlias: 'Fairfieldd' },
+];
+const SPOTIFY_ARTIST_IDS = new Set(SPOTIFY_ARTISTS.map((artist) => artist.id));
 const SPOTIFY_ACCOUNTS = 'https://accounts.spotify.com/api/token';
 const SPOTIFY_API = 'https://api.spotify.com/v1';
 const TOKEN_SAFETY_BUFFER_MS = 30_000;
@@ -206,6 +218,7 @@ function inferImageryFromTitle(title: string): string {
 }
 
 function buildSongDescription(input: {
+  primaryArtistName: string;
   title: string;
   albumName: string;
   releaseDate: string;
@@ -220,6 +233,7 @@ function buildSongDescription(input: {
   hasDedicatedSingleCover: boolean;
 }): string {
   const {
+    primaryArtistName,
     title,
     albumName,
     releaseDate,
@@ -247,8 +261,8 @@ function buildSongDescription(input: {
   else if (durationSecs > avgDurationSecs + 18) durationFact = 'on the longer side of the tracklist';
 
   const lead = isPrimaryArtist
-    ? `${title} appears on ${albumName} as ${positionLabel} (track ${trackNumber} of ${totalTracks}).`
-    : `${title} places smokedope2016 on ${albumName} as ${positionLabel} (track ${trackNumber} of ${totalTracks}).`;
+    ? `${title} appears on ${albumName} by ${primaryArtistName} as ${positionLabel} (track ${trackNumber} of ${totalTracks}).`
+    : `${title} includes ${primaryArtistName} on ${albumName} as ${positionLabel} (track ${trackNumber} of ${totalTracks}).`;
 
   const timing = `Released ${prettyDate} (${season}), it runs ${runtime} and sits ${durationFact}.`;
 
@@ -427,25 +441,40 @@ async function spotifyApiRequest<T>(url: string): Promise<T> {
 }
 
 async function searchSmokedopeSongsFromSpotify(query: string): Promise<SpotifySong[]> {
-  const searchParams = new URLSearchParams({
-    type: 'track',
-    market: 'US',
-    q: `artist:smokedope2016 ${query}`.trim(),
-  });
-
-  const payload = await spotifyApiRequest<SpotifyTrackSearchResponse>(
-    `${SPOTIFY_API}/search?${searchParams.toString()}`
+  const artistResults = await Promise.all(
+    SPOTIFY_ARTISTS.map(async (artist) => {
+      const searchParams = new URLSearchParams({
+        type: 'track',
+        market: 'US',
+        q: `artist:${artist.searchAlias} ${query}`.trim(),
+      });
+      const payload = await spotifyApiRequest<SpotifyTrackSearchResponse>(
+        `${SPOTIFY_API}/search?${searchParams.toString()}`
+      );
+      return payload.tracks.items
+        .filter((track) => track.id && track.name)
+        .filter((track) => track.artists.some((a) => SPOTIFY_ARTIST_IDS.has(a.id)))
+        .map(mapTrackToSong);
+    })
   );
 
-  return payload.tracks.items
-    .filter((track) => track.id && track.name)
-    .filter((track) => track.artists.some((artist) => artist.id === SPOTIFY_ARTIST_ID))
-    .map(mapTrackToSong);
+  const seen = new Set<string>();
+  const merged: SpotifySong[] = [];
+  for (const songs of artistResults) {
+    for (const song of songs) {
+      if (!seen.has(song.id)) {
+        seen.add(song.id);
+        merged.push(song);
+      }
+    }
+  }
+  return merged;
 }
 
 function mapTrackToSong(track: SpotifyTrackSearchItem | SpotifyTrackDetails): SpotifySong {
+  const primaryKnownArtist = track.artists.find((a) => SPOTIFY_ARTIST_IDS.has(a.id));
   const features = track.artists
-    .filter((artist) => artist.id !== SPOTIFY_ARTIST_ID)
+    .filter((artist) => !SPOTIFY_ARTIST_IDS.has(artist.id))
     .map((artist) => artist.name.trim())
     .filter(Boolean);
   const dedupedFeatures = [...new Set(features)];
@@ -459,6 +488,8 @@ function mapTrackToSong(track: SpotifyTrackSearchItem | SpotifyTrackDetails): Sp
   return {
     id: track.id,
     slug: `${slugify(title)}--${track.id}`,
+    artistId: primaryKnownArtist?.id ?? track.artists[0]?.id ?? '',
+    artistName: primaryKnownArtist?.name ?? track.artists[0]?.name ?? '',
     title,
     features: JSON.stringify(dedupedFeatures),
     album: track.album.name,
@@ -468,12 +499,13 @@ function mapTrackToSong(track: SpotifyTrackSearchItem | SpotifyTrackDetails): Sp
     singleCover: hasDedicatedSingleCover ? albumCover : null,
     albumCover,
     description: buildSongDescription({
+      primaryArtistName: primaryKnownArtist?.name ?? track.artists[0]?.name ?? 'Unknown',
       title,
       albumName: track.album.name,
       releaseDate,
       durationSecs,
       features: dedupedFeatures,
-      isPrimaryArtist: track.artists[0]?.id === SPOTIFY_ARTIST_ID,
+      isPrimaryArtist: SPOTIFY_ARTIST_IDS.has(track.artists[0]?.id ?? ''),
       trackNumber: Math.max(1, track.track_number || 1),
       totalTracks,
       minDurationSecs: durationSecs,
@@ -491,14 +523,14 @@ async function getSongByTrackId(trackId: string): Promise<SpotifySong | null> {
   const track = await spotifyApiRequest<SpotifyTrackDetails>(url);
 
   if (!track?.id || !track.name) return null;
-  if (!track.artists.some((artist) => artist.id === SPOTIFY_ARTIST_ID)) return null;
+  if (!track.artists.some((artist) => SPOTIFY_ARTIST_IDS.has(artist.id))) return null;
 
   return mapTrackToSong(track);
 }
 
-async function fetchArtistAlbumSummaries(): Promise<SpotifyAlbumSummary[]> {
+async function fetchArtistAlbumSummaries(artistId: string): Promise<SpotifyAlbumSummary[]> {
   const albums = new Map<string, SpotifyAlbumSummary>();
-  let nextUrl: string | null = `${SPOTIFY_API}/artists/${SPOTIFY_ARTIST_ID}/albums?include_groups=album,single,appears_on&market=US`;
+  let nextUrl: string | null = `${SPOTIFY_API}/artists/${artistId}/albums?include_groups=album,single,appears_on&market=US`;
   let pageCount = 0;
 
   while (nextUrl) {
@@ -521,6 +553,19 @@ async function fetchArtistAlbumSummaries(): Promise<SpotifyAlbumSummary[]> {
     }
   }
 
+  return Array.from(albums.values());
+}
+
+async function fetchAllArtistsAlbumSummaries(): Promise<SpotifyAlbumSummary[]> {
+  const albums = new Map<string, SpotifyAlbumSummary>();
+  for (const artist of SPOTIFY_ARTISTS) {
+    const summaries = await fetchArtistAlbumSummaries(artist.id);
+    for (const summary of summaries) {
+      if (!albums.has(summary.id)) {
+        albums.set(summary.id, summary);
+      }
+    }
+  }
   return Array.from(albums.values());
 }
 
@@ -549,7 +594,7 @@ async function fetchAlbumDetailsWithAllTracks(albumId: string): Promise<SpotifyA
 }
 
 async function fetchAllSmokedopeSongsFromSpotify(): Promise<SpotifySong[]> {
-  const albumSummaries = await fetchArtistAlbumSummaries();
+  const albumSummaries = await fetchAllArtistsAlbumSummaries();
   const dedupedSongs = new Map<string, SpotifySongCandidate>();
 
   for (const summary of albumSummaries) {
@@ -568,24 +613,27 @@ async function fetchAllSmokedopeSongsFromSpotify(): Promise<SpotifySong[]> {
 
     for (const track of album.allTracks) {
       if (!track.id || !track.name) continue;
-      if (!track.artists.some((artist) => artist.id === SPOTIFY_ARTIST_ID)) continue;
+      if (!track.artists.some((artist) => SPOTIFY_ARTIST_IDS.has(artist.id))) continue;
 
       const releaseDate = normalizeReleaseDate(album.release_date, album.release_date_precision);
       const durationSecs = Math.max(1, Math.round(track.duration_ms / 1000));
       const featuresList = track.artists
-        .filter((artist) => artist.id !== SPOTIFY_ARTIST_ID)
+        .filter((artist) => !SPOTIFY_ARTIST_IDS.has(artist.id))
         .map((artist) => artist.name.trim())
         .filter(Boolean);
       const features = [...new Set(featuresList)];
       const title = track.name.trim();
       const dedupeKey = normalizeTitle(title);
-      const isPrimaryArtist = track.artists[0]?.id === SPOTIFY_ARTIST_ID;
+      const primaryKnownArtist = track.artists.find((a) => SPOTIFY_ARTIST_IDS.has(a.id));
+      const isPrimaryArtist = SPOTIFY_ARTIST_IDS.has(track.artists[0]?.id ?? '');
       const trackNumber = Math.max(1, track.track_number || 1);
       const hasDedicatedSingleCover = summary.album_group === 'single' || album.album_type === 'single';
 
       const candidate: SpotifySongCandidate = {
         id: track.id,
         slug: `${slugify(title)}--${track.id}`,
+        artistId: primaryKnownArtist?.id ?? track.artists[0]?.id ?? '',
+        artistName: primaryKnownArtist?.name ?? track.artists[0]?.name ?? '',
         title,
         features: JSON.stringify(features),
         album: album.name,
@@ -595,6 +643,7 @@ async function fetchAllSmokedopeSongsFromSpotify(): Promise<SpotifySong[]> {
         singleCover: hasDedicatedSingleCover ? albumCover : null,
         albumCover,
         description: buildSongDescription({
+          primaryArtistName: primaryKnownArtist?.name ?? track.artists[0]?.name ?? 'Unknown',
           title,
           albumName: album.name,
           releaseDate,
