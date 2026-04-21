@@ -2,6 +2,7 @@
 import type { Metadata } from 'next';
 import { Barlow_Condensed, IBM_Plex_Mono } from 'next/font/google';
 import { Nav } from '@/components/nav/Nav';
+import { ScrollRevealController } from '@/components/motion/ScrollRevealController';
 import './globals.css';
 
 const headline = Barlow_Condensed({
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${headline.variable} ${mono.variable}`}>
+        <ScrollRevealController />
         <Nav />
         <main>{children}</main>
       </body>

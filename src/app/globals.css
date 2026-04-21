@@ -100,13 +100,21 @@ a {
 .smoke-reveal {
   opacity: 0;
   transform: translateY(24px) scale(0.985);
-  animation: smoke-reveal 620ms cubic-bezier(0.2, 0.78, 0.2, 1) forwards;
-  animation-delay: var(--reveal-delay, 0ms);
+  will-change: transform, opacity, filter;
 }
 
 .smoke-reveal-plate {
   opacity: 0;
   transform: translateY(16px);
+  will-change: transform, opacity;
+}
+
+.smoke-reveal.is-visible {
+  animation: smoke-reveal 620ms cubic-bezier(0.2, 0.78, 0.2, 1) forwards;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+.smoke-reveal-plate.is-visible {
   animation: smoke-plate-in 560ms ease forwards;
   animation-delay: var(--reveal-delay, 0ms);
 }
