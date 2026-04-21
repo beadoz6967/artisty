@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { smokedope } from '@/data/characters/smokedope';
 import type { CharacterConfig } from '@/lib/types';
 
@@ -123,8 +123,23 @@ function PinnedApp({
   );
 }
 
-// System tray — frozen at 2016 era time.
+// System tray — live Eastern Time (most populated US timezone).
 function SystemTray() {
+  const [now, setNow] = useState<Date | null>(null);
+
+  useEffect(() => {
+    setNow(new Date());
+    const id = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const timeStr = now
+    ? now.toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit', hour12: true })
+    : '';
+  const dateStr = now
+    ? now.toLocaleDateString('en-US', { timeZone: 'America/New_York', month: 'numeric', day: 'numeric', year: 'numeric' })
+    : '';
+
   return (
     <div
       className="hidden sm:flex items-center gap-2.5 px-3 h-full border-l border-white/[0.08] shrink-0"
@@ -148,7 +163,7 @@ function SystemTray() {
             textShadow: '0px 1px 2px rgba(0,0,0,0.9)',
           }}
         >
-          12:38 PM
+          {timeStr}
         </p>
         <p
           className="leading-none mt-[3px]"
@@ -157,7 +172,7 @@ function SystemTray() {
             color: 'rgba(255,255,255,0.38)',
           }}
         >
-          1/1/2016
+          {dateStr}
         </p>
       </div>
     </div>
@@ -166,7 +181,6 @@ function SystemTray() {
 
 export function Nav() {
   const pathname = usePathname();
-  const isHome = pathname === '/';
 
   return (
     <nav className="aero-taskbar sticky top-0 z-50">
@@ -201,20 +215,13 @@ export function Nav() {
 
         {/* Pinned apps */}
         <div className="flex items-stretch flex-1 min-w-0">
-          <PinnedApp
-            href="/"
-            label="Signal / Smoke"
-            sublabel="Artisty"
-            isActive={isHome}
-          />
-
           {characters.map((c) => (
             <PinnedApp
               key={c.id}
-              href={`/${c.slug}`}
+              href="/"
               label={c.displayName}
               sublabel="Character"
-              isActive={pathname.startsWith(`/${c.slug}`)}
+              isActive={pathname === '/' || pathname.startsWith(`/${c.slug}`)}
               accentColor={c.palette.accent}
               bgImage={navImages[c.slug]}
             />

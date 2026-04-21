@@ -54,7 +54,7 @@ export default function SongSearch({ palette }: Props) {
   const pick = (slug: string) => {
     setOpen(false);
     setQuery('');
-    router.push(`/smokedope2016/songs/${slug}`);
+    router.push(`/songs/${slug}`);
   };
 
   return (

@@ -39,7 +39,7 @@ export default function SongPage({ song }: { song: Song }) {
     >
       <div className="smoke-content mx-auto max-w-4xl px-4 sm:px-6 py-10 sm:py-12">
         <Link
-          href="/smokedope2016"
+          href="/"
           className="mono text-xs uppercase tracking-widest transition-opacity hover:opacity-80"
           style={{ color: '#c2d0e6' }}
         >
