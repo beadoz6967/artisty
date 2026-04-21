@@ -112,19 +112,13 @@ html.reveal-enabled .smoke-reveal:not(.is-visible) {
   transform: translateY(18px) scale(0.992);
 }
 
-html.reveal-enabled .smoke-reveal-plate:not(.is-visible) {
-  opacity: 0;
-  transform: translateY(12px);
-}
-
 .smoke-reveal.is-visible {
   animation: smoke-reveal 360ms cubic-bezier(0.2, 0.78, 0.2, 1) forwards;
   animation-delay: var(--reveal-delay, 0ms);
 }
 
 .smoke-reveal-plate.is-visible {
-  animation: smoke-plate-in 340ms ease forwards;
-  animation-delay: var(--reveal-delay, 0ms);
+  animation: none;
 }
 
 .smoke-dropdown-pop {
@@ -273,8 +267,8 @@ html.reveal-enabled .smoke-reveal-plate:not(.is-visible) {
 }
 
 .smoke-virtualized {
-  content-visibility: auto;
-  contain-intrinsic-size: 1px 900px;
+  content-visibility: visible;
+  contain-intrinsic-size: auto;
 }
 
 .smoke-panel {
