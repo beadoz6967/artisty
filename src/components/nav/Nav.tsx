@@ -186,7 +186,7 @@ export function Nav() {
   useEffect(() => {
     function onScroll() {
       const y = window.scrollY;
-      setNavOpacity(Math.max(0.45, 1 - y / 150));
+      setNavOpacity(Math.max(0, 1 - y / 120));
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -195,7 +195,7 @@ export function Nav() {
   return (
     <nav
       className="aero-taskbar sticky top-0 z-50"
-      style={{ opacity: navOpacity, transition: 'opacity 200ms ease' }}
+      style={{ opacity: navOpacity, transition: 'opacity 200ms ease', pointerEvents: navOpacity === 0 ? 'none' : 'auto' }}
     >
       {/* Gloss overlay */}
       <div
