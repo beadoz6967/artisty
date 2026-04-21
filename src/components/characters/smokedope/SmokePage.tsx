@@ -1,6 +1,7 @@
 // Smokedope world page — cloud-rap dossier with official artwork chronology.
 import Image from 'next/image';
 import type { CharacterConfig, DiscographyEntry, Palette } from '@/lib/types';
+import { ScrollReveal } from '@/components/motion/ScrollReveal';
 
 type Props = {
   config: CharacterConfig;
@@ -29,8 +30,8 @@ type AlbumSectionProps = {
   index: number;
 };
 
-function revealDelay(index: number, start = 0, step = 70): React.CSSProperties {
-  return { '--reveal-delay': `${start + index * step}ms` } as React.CSSProperties;
+function revealDelaySeconds(index: number, start = 0, step = 70): number {
+  return Math.min((start + index * step) / 1000, 0.24);
 }
 
 function AlbumSection({ entry, palette, index }: AlbumSectionProps) {
@@ -38,9 +39,9 @@ function AlbumSection({ entry, palette, index }: AlbumSectionProps) {
 
   return (
     <section className="smoke-content smoke-virtualized mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div
-        className="smoke-frame smoke-reveal relative overflow-hidden w-full h-full min-h-[200px] sm:min-h-[320px]"
-        style={{ ...revealDelay(index, sectionDelay, 0) }}
+      <ScrollReveal
+        className="smoke-frame relative overflow-hidden w-full h-full min-h-[200px] sm:min-h-[320px]"
+        delay={revealDelaySeconds(index, sectionDelay, 0)}
       >
         {entry.coverArt && (
           <Image
@@ -51,9 +52,12 @@ function AlbumSection({ entry, palette, index }: AlbumSectionProps) {
             className="object-cover"
           />
         )}
-      </div>
+      </ScrollReveal>
 
-      <div className="smoke-panel smoke-glass smoke-reveal p-5 sm:p-6 h-full" style={{ ...revealDelay(index, sectionDelay + 80, 0) }}>
+      <ScrollReveal
+        className="smoke-panel smoke-glass p-5 sm:p-6 h-full"
+        delay={revealDelaySeconds(index, sectionDelay + 80, 0)}
+      >
         <p style={{ color: palette.accent }} className="mono smoke-kicker text-[0.56rem]">{entry.year}</p>
         <h2 className="smoke-heading text-2xl sm:text-3xl font-black mt-3">{entry.title}</h2>
         {entry.longDescription && (
@@ -76,7 +80,7 @@ function AlbumSection({ entry, palette, index }: AlbumSectionProps) {
             </ul>
           </div>
         )}
-      </div>
+      </ScrollReveal>
     </section>
   );
 }
@@ -141,47 +145,76 @@ export function SmokePage({ config }: Props) {
 
       <section className="smoke-content smoke-virtualized mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {(highlights ?? []).map((item, idx) => (
-          <article
+          <ScrollReveal
+            as="article"
             key={item.label}
-            className="smoke-panel smoke-glass smoke-reveal-plate p-4"
-            style={revealDelay(idx, 120, 80)}
+            className="smoke-panel smoke-glass p-4"
+            delay={revealDelaySeconds(idx, 120, 80)}
           >
             <p className="mono text-[0.54rem] uppercase tracking-[0.25em]" style={{ color: SMOKE_COLORS.highlightLabel }}>{item.label}</p>
             <p className="text-sm mt-2" style={{ color: SMOKE_COLORS.highlightValue }}>{item.value}</p>
-          </article>
+          </ScrollReveal>
         ))}
       </section>
 
       <section className="smoke-content smoke-virtualized mx-auto max-w-6xl px-4 sm:px-6 py-10 sm:py-12">
-        <p style={{ color: palette.accent, ...revealDelay(0, 110, 0) }} className="mono smoke-kicker smoke-reveal text-[0.56rem]">Persona map</p>
-        <h2 className="smoke-heading smoke-reveal text-2xl sm:text-3xl font-black mt-3 mb-8" style={revealDelay(0, 190, 0)}>How the signal is built</h2>
+        <ScrollReveal
+          as="p"
+          style={{ color: palette.accent }}
+          className="mono smoke-kicker text-[0.56rem]"
+          delay={revealDelaySeconds(0, 110, 0)}
+        >
+          Persona map
+        </ScrollReveal>
+        <ScrollReveal
+          as="h2"
+          className="smoke-heading text-2xl sm:text-3xl font-black mt-3 mb-8"
+          delay={revealDelaySeconds(0, 190, 0)}
+        >
+          How the signal is built
+        </ScrollReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {lore.map((block, idx) => (
-            <article
+            <ScrollReveal
+              as="article"
               key={block.heading}
-              className="smoke-panel smoke-reveal-plate border-l-2 border-l-[#f04040] p-4 sm:p-5"
-              style={revealDelay(idx, 280, 75)}
+              className="smoke-panel border-l-2 border-l-[#f04040] p-4 sm:p-5"
+              delay={revealDelaySeconds(idx, 280, 75)}
             >
               <h3 style={{ color: palette.accent }} className="mono text-[0.65rem] uppercase tracking-[0.22em]">
                 {block.heading}
               </h3>
               <p className="text-sm leading-relaxed mt-2" style={{ color: SMOKE_COLORS.loreProse }}>{block.body}</p>
-            </article>
+            </ScrollReveal>
           ))}
         </div>
       </section>
 
       <section className="smoke-content smoke-virtualized mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14">
-        <p style={{ color: palette.accent, ...revealDelay(0, 100, 0) }} className="mono smoke-kicker smoke-reveal text-[0.56rem]">Discography timeline</p>
-        <h2 className="smoke-heading smoke-reveal text-2xl sm:text-3xl font-black mt-3" style={revealDelay(0, 190, 0)}>Timeline: official releases</h2>
+        <ScrollReveal
+          as="p"
+          style={{ color: palette.accent }}
+          className="mono smoke-kicker text-[0.56rem]"
+          delay={revealDelaySeconds(0, 100, 0)}
+        >
+          Discography timeline
+        </ScrollReveal>
+        <ScrollReveal
+          as="h2"
+          className="smoke-heading text-2xl sm:text-3xl font-black mt-3"
+          delay={revealDelaySeconds(0, 190, 0)}
+        >
+          Timeline: official releases
+        </ScrollReveal>
 
         <div className="mt-8 space-y-4">
           {sortedDiscography.map((entry, idx) => (
-            <article
+            <ScrollReveal
+              as="article"
               key={entry.title}
-              className="smoke-panel smoke-reveal-plate grid grid-cols-[56px_1fr_72px] sm:grid-cols-[70px_1fr_88px] md:grid-cols-[90px_1fr_112px] items-center gap-3 sm:gap-4 p-3 md:p-4"
-              style={revealDelay(idx, 300, 60)}
+              className="smoke-panel grid grid-cols-[56px_1fr_72px] sm:grid-cols-[70px_1fr_88px] md:grid-cols-[90px_1fr_112px] items-center gap-3 sm:gap-4 p-3 md:p-4"
+              delay={revealDelaySeconds(idx, 300, 60)}
             >
               <p className="mono text-xs" style={{ color: SMOKE_COLORS.timelineYear }}>{entry.year}</p>
               <div>
@@ -201,7 +234,7 @@ export function SmokePage({ config }: Props) {
               ) : (
                 <div className="smoke-frame aspect-square w-[72px] sm:w-[88px] md:w-[112px] bg-[var(--color-card)]" />
               )}
-            </article>
+            </ScrollReveal>
           ))}
         </div>
       </section>
@@ -212,17 +245,31 @@ export function SmokePage({ config }: Props) {
 
       {gallery && gallery.length > 0 && (
         <section className="smoke-content smoke-virtualized mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14">
-          <p style={{ color: palette.accent, ...revealDelay(0, 100, 0) }} className="mono smoke-kicker smoke-reveal text-[0.56rem]">Projects</p>
-          <h2 className="smoke-heading smoke-reveal text-2xl sm:text-3xl font-black mt-3" style={revealDelay(0, 180, 0)}>Cover archive</h2>
+          <ScrollReveal
+            as="p"
+            style={{ color: palette.accent }}
+            className="mono smoke-kicker text-[0.56rem]"
+            delay={revealDelaySeconds(0, 100, 0)}
+          >
+            Projects
+          </ScrollReveal>
+          <ScrollReveal
+            as="h2"
+            className="smoke-heading text-2xl sm:text-3xl font-black mt-3"
+            delay={revealDelaySeconds(0, 180, 0)}
+          >
+            Cover archive
+          </ScrollReveal>
 
           <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {[...gallery]
               .sort((a, b) => (b.year ?? 0) - (a.year ?? 0))
               .map((item, idx) => (
-                <article
+                <ScrollReveal
+                  as="article"
                   key={item.title}
-                  className="smoke-panel smoke-reveal-plate p-2 group transition-transform duration-300 ease-out hover:-translate-y-1"
-                  style={revealDelay(idx, 260, 55)}
+                  className="smoke-panel p-2 group transition-transform duration-300 ease-out hover:-translate-y-1"
+                  delay={revealDelaySeconds(idx, 260, 55)}
                 >
                   <div className="smoke-frame relative aspect-square overflow-hidden">
                     <Image
@@ -239,7 +286,7 @@ export function SmokePage({ config }: Props) {
                   </div>
                   <p className="text-xs mt-2 truncate transition-colors duration-200 group-hover:text-white" style={{ color: SMOKE_COLORS.galleryTitle }}>{item.title}</p>
                   {item.year && <p className="mono text-[0.62rem] mt-1" style={{ color: SMOKE_COLORS.galleryYear }}>{item.year}</p>}
-                </article>
+                </ScrollReveal>
               ))}
           </div>
         </section>
