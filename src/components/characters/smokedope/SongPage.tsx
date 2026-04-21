@@ -2,15 +2,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Song } from '@/lib/types';
+import { smokedope } from '@/data/characters/smokedope';
 
-const palette = {
-  bg: '#0f0d0b',
-  surface: '#1a1510',
-  accent: '#c8a96e',
-  text: '#e8dcc8',
-  muted: '#8fa89c',
-  border: '#2d2518',
-};
+const { palette } = smokedope;
 
 function formatDuration(secs: number): string {
   const m = Math.floor(secs / 60);
@@ -24,7 +18,6 @@ function formatDate(iso: string): string {
 }
 
 export default function SongPage({ song }: { song: Song }) {
-  const features: string[] = JSON.parse(song.features);
   const cover = song.singleCover ?? song.albumCover;
   const description = song.description?.trim() ||
     `${song.title} appears on ${song.album} (${song.year}). Full archive note is temporarily unavailable, but track metadata is loaded.`;
@@ -72,9 +65,9 @@ export default function SongPage({ song }: { song: Song }) {
               <h1 className="smoke-heading text-3xl font-black leading-tight sm:text-4xl" style={{ color: palette.text }}>
                 {song.title}
               </h1>
-              {features.length > 0 && (
+              {song.features.length > 0 && (
                 <p className="mono text-sm uppercase tracking-[0.08em]" style={{ color: '#cad6eb' }}>
-                  feature signal: {features.join(', ')}
+                  feature signal: {song.features.join(', ')}
                 </p>
               )}
 

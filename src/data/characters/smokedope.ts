@@ -22,6 +22,13 @@ export const smokedope: CharacterConfig = {
     aliases: ['Fairfieldd'],
   },
 
+  highlights: [
+    { label: 'Origin', value: 'Virginia, USA' },
+    { label: 'Born', value: '28 May 2001' },
+    { label: 'Persona', value: 'Masked / image-controlled' },
+    { label: 'Trilogy Arc', value: 'COMEUP → PEAK → COMEDOWN' },
+  ],
+
   lore: [
     {
       heading: 'Masked signal',
@@ -74,6 +81,23 @@ export const smokedope: CharacterConfig = {
       tracks: 13,
       note: 'His 7th album. Slower, darker — house influences gone, consequences in.',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/1250897f68ebecf3f2d292b8cdc0438a/640x640-000000-80-0-0.jpg',
+      longDescription:
+        'His seventh album and the trilogy closer. The house-leaning production is gone — what\'s left is slower, darker, and more self-aware. Songs about what comes after the high, not the high itself.',
+      tracklist: [
+        { n: 1, title: 'Banshee', dur: '2:59' },
+        { n: 2, title: 'My Chalice', dur: '3:12' },
+        { n: 3, title: "Wild 'N Out", dur: '1:53' },
+        { n: 4, title: 'Smoking Kills', dur: '2:24' },
+        { n: 5, title: 'Flocc', dur: '2:45' },
+        { n: 6, title: 'How I Bled', dur: '2:31' },
+        { n: 7, title: 'Forgiato', dur: '2:36' },
+        { n: 8, title: 'Be My Zombie', dur: '4:09' },
+        { n: 9, title: 'Ozweego', dur: '2:12' },
+        { n: 10, title: 'Famous', dur: '1:48' },
+        { n: 11, title: 'Lips Sealed', dur: '3:02' },
+        { n: 12, title: 'Lay My Body Down', dur: '3:17' },
+        { n: 13, title: 'Closing Time', dur: '2:40' },
+      ],
     },
     {
       title: 'SLOW DOWN',
@@ -86,12 +110,46 @@ export const smokedope: CharacterConfig = {
       year: 2025,
       note: 'Debuted #9 Spotify US. Produced by Lil Fittedcap and Bartesian Water.',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/b004c8c39c4f7aef180e34dbe59cde18/640x640-000000-80-0-0.jpg',
+      longDescription:
+        'Released January 2025, debuted at number nine on the Spotify US album chart. Produced mainly by Lil Fittedcap and Bartesian Water, the sound gets sharper without losing the woozy atmosphere. This is the record that pushed him past a million monthly listeners.',
+      tracklist: [
+        { n: 1, title: 'Back2Back', dur: '2:41' },
+        { n: 2, title: 'Icey Soles', dur: '3:18' },
+        { n: 3, title: 'Taipei / Waterbed', dur: '3:15' },
+        { n: 4, title: 'Elite Socks', dur: '3:09' },
+        { n: 5, title: 'Goyard', dur: '3:03' },
+        { n: 6, title: 'Dope Love', dur: '3:08' },
+        { n: 7, title: 'Draft Night', dur: '2:20' },
+        { n: 8, title: 'Gnarly', dur: '3:28' },
+        { n: 9, title: 'Trust', dur: '2:36' },
+        { n: 10, title: 'In Da Party', dur: '2:21' },
+        { n: 11, title: 'Hypebeast', dur: '1:50' },
+        { n: 12, title: 'Eastbay', dur: '2:34' },
+        { n: 13, title: 'Off Tha Cid', dur: '2:17' },
+      ],
     },
     {
       title: 'THE COMEUP',
       year: 2024,
       note: 'Trilogy opener. 13 tracks. Established the sound before it had an audience.',
       coverArt: 'https://cdn-images.dzcdn.net/images/cover/23fa0725c20a28ef2dfdf6d173792099/640x640-000000-80-0-0.jpg',
+      longDescription:
+        'The first chapter, out May 2024. Thirteen tracks built around a late-night nostalgic haze that becomes the trilogy\'s signature. Quieter and more restrained than what follows — closer to a mood being established than a statement being made.',
+      tracklist: [
+        { n: 1, title: 'Drank', dur: '2:00' },
+        { n: 2, title: 'White Owls', dur: '3:18' },
+        { n: 3, title: 'Glock', dur: '3:26' },
+        { n: 4, title: 'Merch', dur: '2:38' },
+        { n: 5, title: 'No Water', dur: '2:07' },
+        { n: 6, title: 'Frat', dur: '3:21' },
+        { n: 7, title: 'Foamposite Interlude', dur: '3:22' },
+        { n: 8, title: 'My Style', dur: '3:48' },
+        { n: 9, title: 'Ball Out', dur: '2:50' },
+        { n: 10, title: 'Khalifa', dur: '3:00' },
+        { n: 11, title: 'High', dur: '2:53' },
+        { n: 12, title: 'Mall', dur: '2:38' },
+        { n: 13, title: 'Too Gone', dur: '3:32' },
+      ],
     },
     {
       title: '2016',

@@ -4,37 +4,23 @@ import { isSpotifyAuthError, searchSmokedopeSongs } from '@/lib/spotify';
 
 const SONG_SEARCH_TIMEOUT_MS = 20_000;
 
-function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
-  let timeoutId: ReturnType<typeof setTimeout>;
-
-  return new Promise((resolve, reject) => {
-    timeoutId = setTimeout(() => reject(new Error(`Song search timed out after ${timeoutMs}ms`)), timeoutMs);
-
-    promise
-      .then((value) => {
-        clearTimeout(timeoutId);
-        resolve(value);
-      })
-      .catch((error) => {
-        clearTimeout(timeoutId);
-        reject(error);
-      });
-  });
-}
-
 export async function GET(req: NextRequest) {
   const q = req.nextUrl.searchParams.get('q')?.trim();
-  if (!q) return NextResponse.json([]);
+  if (!q || q.length > 100) return NextResponse.json([]);
+
+  const timeoutPromise = new Promise<never>((_, reject) =>
+    setTimeout(() => reject(new Error(`Song search timed out after ${SONG_SEARCH_TIMEOUT_MS}ms`)), SONG_SEARCH_TIMEOUT_MS)
+  );
 
   try {
-    const songs = await withTimeout(searchSmokedopeSongs(q), SONG_SEARCH_TIMEOUT_MS);
+    const songs = await Promise.race([searchSmokedopeSongs(q), timeoutPromise]);
 
     return NextResponse.json(
       songs.map((song) => ({
         id: song.id,
         slug: song.slug,
         title: song.title,
-        features: song.features,
+        features: JSON.parse(song.features) as string[],
         year: song.year,
         singleCover: song.singleCover,
         albumCover: song.albumCover,

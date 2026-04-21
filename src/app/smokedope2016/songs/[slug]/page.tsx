@@ -5,7 +5,10 @@ import { getSmokedopeSongBySlug } from '@/lib/spotify';
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const song = await getSmokedopeSongBySlug(slug);
-  if (!song) notFound();
+  const raw = await getSmokedopeSongBySlug(slug);
+  if (!raw) notFound();
+
+  // Parse features at the server boundary so SongPage receives string[]
+  const song = { ...raw, features: JSON.parse(raw.features) as string[] };
   return <SongPage song={song} />;
 }

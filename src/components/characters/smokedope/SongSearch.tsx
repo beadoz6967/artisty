@@ -3,26 +3,24 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import type { Palette } from '@/lib/types';
 
 interface SongResult {
   id: string;
   slug: string;
   title: string;
-  features: string;
+  features: string[];
   year: number;
   singleCover: string | null;
   albumCover: string;
 }
 
 interface Props {
-  accent: string;
-  border: string;
-  surface: string;
-  text: string;
-  muted: string;
+  palette: Palette;
 }
 
-export default function SongSearch({ accent, border, surface, text, muted }: Props) {
+export default function SongSearch({ palette }: Props) {
+  const { accent, border, text } = palette;
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SongResult[]>([]);
   const [open, setOpen] = useState(false);
@@ -143,7 +141,6 @@ export default function SongSearch({ accent, border, surface, text, muted }: Pro
           <div className="smoke-glass smoke-panel overflow-hidden border" style={{ borderColor: border }}>
             <ul className="max-h-80 overflow-y-auto">
               {results.map((song) => {
-                const features: string[] = JSON.parse(song.features);
                 const cover = song.singleCover ?? song.albumCover;
                 return (
                   <li
@@ -167,9 +164,9 @@ export default function SongSearch({ accent, border, surface, text, muted }: Pro
                       <p className="truncate font-bold tracking-wide" style={{ color: '#e5eaf4' }}>
                         {song.title}
                       </p>
-                      {features.length > 0 && (
+                      {song.features.length > 0 && (
                         <p className="truncate mono text-[0.68rem] uppercase tracking-[0.14em] text-[#becee7] sm:text-xs">
-                          ft. {features.join(', ')}
+                          ft. {song.features.join(', ')}
                         </p>
                       )}
                     </div>

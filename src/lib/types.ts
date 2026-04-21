@@ -31,6 +31,8 @@ export type DiscographyEntry = {
   tracks?: number;
   note?: string;
   coverArt?: string;
+  longDescription?: string;
+  tracklist?: Array<{ n: number; title: string; dur: string }>;
 };
 
 // Gallery entry for visual releases/projects
@@ -40,20 +42,12 @@ export type GalleryEntry = {
   year?: number;
 };
 
-// One story arc — for comic/show characters
-export type StoryArc = {
-  title: string;
-  year: number;
-  note?: string;
-  image?: string;
-};
-
 // A song record used by smokedope song pages
 export type Song = {
   id: string;
   slug: string;
   title: string;
-  features: string; // JSON array string
+  features: string[];
   album: string;
   year: number;
   releaseDate: string;
@@ -71,7 +65,7 @@ export type CharacterConfig = {
   palette: Palette;
   meta: CharacterMeta;
   lore: LoreBlock[];
+  highlights?: Array<{ label: string; value: string }>;
   discography?: DiscographyEntry[];
-  arcs?: StoryArc[];
   gallery?: GalleryEntry[];
 };
