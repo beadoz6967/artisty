@@ -241,6 +241,7 @@ export function SmokePage({ config }: Props) {
                 <li key={track.n} className="flex items-baseline gap-3 text-sm text-[#e4e9f2]">
                   <span className="mono text-[0.6rem] text-[#7a8faa] w-4 shrink-0">{track.n}</span>
                   <span className="flex-1">{track.title}</span>
+                  <span className="mono text-[0.6rem] text-[#7a8faa] shrink-0">{track.dur}</span>
                 </li>
               ))}
             </ul>
@@ -273,6 +274,7 @@ export function SmokePage({ config }: Props) {
                 <li key={track.n} className="flex items-baseline gap-3 text-sm text-[#e4e9f2]">
                   <span className="mono text-[0.6rem] text-[#7a8faa] w-4 shrink-0">{track.n}</span>
                   <span className="flex-1">{track.title}</span>
+                  <span className="mono text-[0.6rem] text-[#7a8faa] shrink-0">{track.dur}</span>
                 </li>
               ))}
             </ul>
