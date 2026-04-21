@@ -31,42 +31,36 @@ export const smokedope: CharacterConfig = {
 
   lore: [
     {
-      heading: 'Masked signal',
       body:
         'Every photo, video, and cover has his face blurred or hidden. He addressed it directly in his first interview — ' +
         'he wanted to protect people in his life who had other things going on: school, legal exposure, lives outside rap. ' +
         'The mask is practical as much as it is aesthetic.',
     },
     {
-      heading: 'Virginia origin line',
       body:
         'Grew up in Virginia, worked a welding job until summer 2024, then quit. ' +
         'Six months later he had a sold-out LA show with over a thousand people in the room. ' +
         'The internet did most of that work.',
     },
     {
-      heading: 'Underground co-sign era',
       body:
         'The Joeyy feature on "IM NOT GOD BUT I WISH I WAS" in 2022 was the underground handshake. ' +
         'From there: Lil Fittedcap on production, Sematary for a Halloween collab, Cole Bennett executive producing the "2016LYFE" video. ' +
         'Each one opened a different pocket of the internet.',
     },
     {
-      heading: 'The trilogy arc',
       body:
         'THE COMEUP sets up the world. THE PEAK is where the audience arrived. ' +
         'THE COMEDOWN is the aftermath — slower, darker, asking what it means when the moment starts to pass. ' +
         'Three albums, two years, one consistent mask.',
     },
     {
-      heading: 'Fairfieldd channel',
       body:
         'Fairfieldd is his secondary alias — guitar-based beats, emo register, face actually visible in the videos. ' +
         'He started it in 2022, same year as SMOKESHOP. It sits in Lil Peep territory rather than cloud rap. ' +
         'Different name, different sound, same person.',
     },
     {
-      heading: '2016LYFE grammar',
       body:
         'The stage name came from his Steam gamertag — his previous one was SwisherSmoker420. ' +
         'The "2016" part is a timestamp and a mood: it marks the era before everything moved fast. ' +

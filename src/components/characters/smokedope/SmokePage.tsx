@@ -117,7 +117,6 @@ export function SmokePage({ config }: Props) {
 
         <div className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-center">
           <div className="smoke-glass smoke-panel w-full max-w-3xl border p-5 sm:p-8 md:p-10">
-            <p className="mono smoke-kicker text-[0.56rem] hero-fade-1" style={{ color: SMOKE_COLORS.kicker }}>Signal archive: smokedope2016</p>
             <h1
               style={{ color: palette.accent }}
               className="smoke-heading mt-4 max-w-full break-words [overflow-wrap:anywhere] text-[clamp(2rem,7vw,4.5rem)] leading-[1] font-black tracking-tight hero-rise-2"
@@ -158,34 +157,15 @@ export function SmokePage({ config }: Props) {
       </section>
 
       <section className="smoke-content smoke-virtualized mx-auto max-w-6xl px-4 sm:px-6 py-10 sm:py-12">
-        <ScrollReveal
-          as="p"
-          style={{ color: palette.accent }}
-          className="mono smoke-kicker text-[0.56rem]"
-          delay={revealDelaySeconds(0, 110, 0)}
-        >
-          Persona map
-        </ScrollReveal>
-        <ScrollReveal
-          as="h2"
-          className="smoke-heading text-2xl sm:text-3xl font-black mt-3 mb-8"
-          delay={revealDelaySeconds(0, 190, 0)}
-        >
-          How the signal is built
-        </ScrollReveal>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {lore.map((block, idx) => (
             <ScrollReveal
               as="article"
-              key={block.heading}
+              key={block.body.slice(0, 40)}
               className="smoke-panel border-l-2 border-l-[#f04040] p-4 sm:p-5"
               delay={revealDelaySeconds(idx, 280, 75)}
             >
-              <h3 style={{ color: palette.accent }} className="mono text-[0.65rem] uppercase tracking-[0.22em]">
-                {block.heading}
-              </h3>
-              <p className="text-sm leading-relaxed mt-2" style={{ color: SMOKE_COLORS.loreProse }}>{block.body}</p>
+              <p className="text-sm leading-relaxed" style={{ color: SMOKE_COLORS.loreProse }}>{block.body}</p>
             </ScrollReveal>
           ))}
         </div>

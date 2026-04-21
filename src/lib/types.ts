@@ -18,9 +18,9 @@ export type CharacterMeta = {
   aliases: string[];
 };
 
-// A single lore section — heading + body prose
+// A single lore section — body prose, optional heading
 export type LoreBlock = {
-  heading: string;
+  heading?: string;
   body: string;
 };
 
