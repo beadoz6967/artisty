@@ -147,7 +147,7 @@ export default function SongSearch({ palette }: Props) {
       </div>
 
       {open && results.length > 0 && (
-        <div className="relative mt-2">
+        <div className="smoke-dropdown-pop relative mt-2">
           <div className="smoke-glass smoke-panel overflow-hidden border" style={{ borderColor: border }}>
             <ul className="max-h-80 overflow-y-auto">
               {results.map((song) => {
@@ -193,7 +193,7 @@ export default function SongSearch({ palette }: Props) {
       )}
 
       {open && results.length === 0 && query.trim() && (
-        <div className="smoke-glass smoke-panel mt-2 border px-4 py-4" style={{ borderColor: border }}>
+        <div className="smoke-dropdown-pop smoke-glass smoke-panel mt-2 border px-4 py-4" style={{ borderColor: border }}>
           <p className="mono text-[0.72rem] uppercase tracking-[0.22em] text-[#ced9ec]">No tracks found.</p>
         </div>
       )}

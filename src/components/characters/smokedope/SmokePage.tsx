@@ -27,12 +27,22 @@ const SMOKE_COLORS = {
 type AlbumSectionProps = {
   entry: DiscographyEntry;
   palette: Palette;
+  index: number;
 };
 
-function AlbumSection({ entry, palette }: AlbumSectionProps) {
+function revealDelay(index: number, start = 0, step = 70): React.CSSProperties {
+  return { '--reveal-delay': `${start + index * step}ms` } as React.CSSProperties;
+}
+
+function AlbumSection({ entry, palette, index }: AlbumSectionProps) {
+  const sectionDelay = 80 + index * 80;
+
   return (
     <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div className="smoke-frame relative overflow-hidden w-full h-full min-h-[200px] sm:min-h-[320px]">
+      <div
+        className="smoke-frame smoke-reveal relative overflow-hidden w-full h-full min-h-[200px] sm:min-h-[320px]"
+        style={{ ...revealDelay(index, sectionDelay, 0) }}
+      >
         {entry.coverArt && (
           <Image
             src={entry.coverArt}
@@ -44,7 +54,7 @@ function AlbumSection({ entry, palette }: AlbumSectionProps) {
         )}
       </div>
 
-      <div className="smoke-panel smoke-glass p-5 sm:p-6 h-full">
+      <div className="smoke-panel smoke-glass smoke-reveal p-5 sm:p-6 h-full" style={{ ...revealDelay(index, sectionDelay + 80, 0) }}>
         <p style={{ color: palette.accent }} className="mono smoke-kicker text-[0.56rem]">{entry.year}</p>
         <h2 className="smoke-heading text-2xl sm:text-3xl font-black mt-3">{entry.title}</h2>
         {entry.longDescription && (
@@ -130,8 +140,12 @@ export function SmokePage({ config }: Props) {
       </section>
 
       <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        {(highlights ?? []).map((item) => (
-          <article key={item.label} className="smoke-panel smoke-glass p-4">
+        {(highlights ?? []).map((item, idx) => (
+          <article
+            key={item.label}
+            className="smoke-panel smoke-glass smoke-reveal-plate p-4"
+            style={revealDelay(idx, 120, 80)}
+          >
             <p className="mono text-[0.54rem] uppercase tracking-[0.25em]" style={{ color: SMOKE_COLORS.highlightLabel }}>{item.label}</p>
             <p className="text-sm mt-2" style={{ color: SMOKE_COLORS.highlightValue }}>{item.value}</p>
           </article>
@@ -139,12 +153,16 @@ export function SmokePage({ config }: Props) {
       </section>
 
       <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-10 sm:py-12">
-        <p style={{ color: palette.accent }} className="mono smoke-kicker text-[0.56rem]">Persona map</p>
-        <h2 className="smoke-heading text-2xl sm:text-3xl font-black mt-3 mb-8">How the signal is built</h2>
+        <p style={{ color: palette.accent, ...revealDelay(0, 110, 0) }} className="mono smoke-kicker smoke-reveal text-[0.56rem]">Persona map</p>
+        <h2 className="smoke-heading smoke-reveal text-2xl sm:text-3xl font-black mt-3 mb-8" style={revealDelay(0, 190, 0)}>How the signal is built</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {lore.map((block) => (
-            <article key={block.heading} className="smoke-panel border-l-2 border-l-[#f04040] p-4 sm:p-5">
+          {lore.map((block, idx) => (
+            <article
+              key={block.heading}
+              className="smoke-panel smoke-reveal-plate border-l-2 border-l-[#f04040] p-4 sm:p-5"
+              style={revealDelay(idx, 280, 75)}
+            >
               <h3 style={{ color: palette.accent }} className="mono text-[0.65rem] uppercase tracking-[0.22em]">
                 {block.heading}
               </h3>
@@ -155,22 +173,23 @@ export function SmokePage({ config }: Props) {
       </section>
 
       <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14">
-        <p style={{ color: palette.accent }} className="mono smoke-kicker text-[0.56rem]">Song vault</p>
-        <h2 className="smoke-heading text-2xl sm:text-3xl font-black mt-3">Search the full catalog</h2>
-        <div className="smoke-panel smoke-glass mt-6 max-w-lg p-4">
+        <p style={{ color: palette.accent, ...revealDelay(0, 100, 0) }} className="mono smoke-kicker smoke-reveal text-[0.56rem]">Song vault</p>
+        <h2 className="smoke-heading smoke-reveal text-2xl sm:text-3xl font-black mt-3" style={revealDelay(0, 180, 0)}>Search the full catalog</h2>
+        <div className="smoke-panel smoke-glass smoke-reveal mt-6 max-w-lg p-4" style={revealDelay(0, 260, 0)}>
           <SongSearch palette={palette} />
         </div>
       </section>
 
       <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14">
-        <p style={{ color: palette.accent }} className="mono smoke-kicker text-[0.56rem]">Discography timeline</p>
-        <h2 className="smoke-heading text-2xl sm:text-3xl font-black mt-3">Timeline: official releases</h2>
+        <p style={{ color: palette.accent, ...revealDelay(0, 100, 0) }} className="mono smoke-kicker smoke-reveal text-[0.56rem]">Discography timeline</p>
+        <h2 className="smoke-heading smoke-reveal text-2xl sm:text-3xl font-black mt-3" style={revealDelay(0, 190, 0)}>Timeline: official releases</h2>
 
         <div className="mt-8 space-y-4">
-          {sortedDiscography.map((entry) => (
+          {sortedDiscography.map((entry, idx) => (
             <article
               key={entry.title}
-              className="smoke-panel grid grid-cols-[56px_1fr_72px] sm:grid-cols-[70px_1fr_88px] md:grid-cols-[90px_1fr_112px] items-center gap-3 sm:gap-4 p-3 md:p-4"
+              className="smoke-panel smoke-reveal-plate grid grid-cols-[56px_1fr_72px] sm:grid-cols-[70px_1fr_88px] md:grid-cols-[90px_1fr_112px] items-center gap-3 sm:gap-4 p-3 md:p-4"
+              style={revealDelay(idx, 300, 60)}
             >
               <p className="mono text-xs" style={{ color: SMOKE_COLORS.timelineYear }}>{entry.year}</p>
               <div>
@@ -189,23 +208,23 @@ export function SmokePage({ config }: Props) {
         </div>
       </section>
 
-      {trilogyAlbums.map((entry) => (
-        <AlbumSection key={entry.title} entry={entry} palette={palette} />
+      {trilogyAlbums.map((entry, idx) => (
+        <AlbumSection key={entry.title} entry={entry} palette={palette} index={idx} />
       ))}
 
       {gallery && gallery.length > 0 && (
         <section className="smoke-content mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14">
-          <p style={{ color: palette.accent }} className="mono smoke-kicker text-[0.56rem]">Projects</p>
-          <h2 className="smoke-heading text-2xl sm:text-3xl font-black mt-3">Cover archive</h2>
+          <p style={{ color: palette.accent, ...revealDelay(0, 100, 0) }} className="mono smoke-kicker smoke-reveal text-[0.56rem]">Projects</p>
+          <h2 className="smoke-heading smoke-reveal text-2xl sm:text-3xl font-black mt-3" style={revealDelay(0, 180, 0)}>Cover archive</h2>
 
           <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {[...gallery]
               .sort((a, b) => (b.year ?? 0) - (a.year ?? 0))
-              .map((item) => (
+              .map((item, idx) => (
                 <article
                   key={item.title}
-                  className="smoke-panel p-2 group transition-transform duration-300 ease-out hover:-translate-y-1"
-                  style={{ willChange: 'transform' }}
+                  className="smoke-panel smoke-reveal-plate p-2 group transition-transform duration-300 ease-out hover:-translate-y-1"
+                  style={{ ...revealDelay(idx, 260, 55), willChange: 'transform' }}
                 >
                   <div className="smoke-frame relative aspect-square overflow-hidden">
                     <Image
