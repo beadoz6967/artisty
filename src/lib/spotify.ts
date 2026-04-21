@@ -113,9 +113,6 @@ const SONG_DESCRIPTION_VERSION = 3;
 const SPOTIFY_REQUEST_TIMEOUT_MS = 12_000;
 const SPOTIFY_MAX_PAGES = 200;
 const SPOTIFY_AUTH_ERROR_CODE = 'SPOTIFY_AUTH_INVALID';
-const REDIRECT_URI = process.env.NODE_ENV === 'production'
-  ? 'https://www.beadoz.dev/api/songs'
-  : 'http://localhost:3000/api/songs';
 
 const globalSpotify = globalThis as GlobalSpotifyState;
 
@@ -422,7 +419,7 @@ async function spotifyApiRequest<T>(url: string): Promise<T> {
   } catch (error) {
     if (isSpotifyUnauthorizedError(error)) {
       throw new Error(
-        `${SPOTIFY_AUTH_ERROR_CODE}: Spotify API rejected client credentials. Redirect=${REDIRECT_URI}`
+        `${SPOTIFY_AUTH_ERROR_CODE}: Spotify API rejected client credentials. Verify SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET.`
       );
     }
     throw error;
@@ -627,7 +624,12 @@ async function fetchAllSmokedopeSongsFromSpotify(): Promise<SpotifySong[]> {
       if (a.year !== b.year) return b.year - a.year;
       return a.title.localeCompare(b.title);
     })
-    .map(({ sourceRank, searchText, ...song }) => song);
+    .map((entry) => {
+      const { sourceRank, searchText, ...song } = entry;
+      void sourceRank;
+      void searchText;
+      return song;
+    });
 }
 
 export async function getAllSmokedopeSongs(forceRefresh = false): Promise<SpotifySong[]> {

@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Artisty
 
-## Getting Started
+A Next.js 16 character archive focused on smokedope2016, with:
 
-First, run the development server:
+- a custom character page design system
+- Spotify-backed song search and detail pages
+- Prisma schema + seed scripts for local catalog workflows
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Tech Stack
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Next.js 16 (App Router)
+- React 19 + TypeScript (strict)
+- Tailwind CSS 4
+- Prisma + SQLite
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Required Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a local environment file and set:
 
-## Learn More
+- SPOTIFY_CLIENT_ID
+- SPOTIFY_CLIENT_SECRET
+- DATABASE_URL
 
-To learn more about Next.js, take a look at the following resources:
+Example DATABASE_URL for local Prisma SQLite:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- file:./prisma/dev.db
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Install
 
-## Deploy on Vercel
+npm install
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Run
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Dev server: npm run dev
+- Production build: npm run build
+- Start production server: npm run start
+- Lint: npm run lint
+
+## Routes
+
+- / -> smokedope2016 archive home
+- /[character] -> dynamic character route (currently smokedope2016)
+- /songs/[slug] -> canonical song detail page
+- /api/songs?q=query -> Spotify-powered search endpoint
+
+Legacy route /smokedope2016/songs/[slug] permanently redirects to /songs/[slug].
+
+## Prisma
+
+- Schema: prisma/schema.prisma
+- Seed command: npx prisma db seed
+- Main seed file: prisma/seed.ts
+- Spotify sync helper: scripts/sync-smokedope-spotify-seed.mjs
+
+## Notes
+
+- Song features are stored as serialized JSON in source records and safely parsed at route boundaries.
+- Spotify auth uses client_credentials flow (no redirect URI needed).

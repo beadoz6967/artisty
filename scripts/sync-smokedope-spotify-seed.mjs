@@ -257,7 +257,11 @@ async function main() {
   }
 
   const songs = Array.from(dedupedByTrackName.values())
-    .map(({ sourceAlbumType, ...song }) => song)
+    .map((entry) => {
+      const { sourceAlbumType, ...song } = entry;
+      void sourceAlbumType;
+      return song;
+    })
     .sort((a, b) => {
       if (a.releaseDate !== b.releaseDate) return a.releaseDate.localeCompare(b.releaseDate);
       return a.title.localeCompare(b.title);

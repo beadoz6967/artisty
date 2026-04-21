@@ -24,7 +24,19 @@ function slug(title: string): string {
     .replace(/-+/g, '-');
 }
 
-const songs = [
+type SeedSong = {
+  title: string;
+  features: string;
+  album: string;
+  year: number;
+  releaseDate: string;
+  durationSecs: number;
+  albumCover: string;
+  description: string;
+  singleCover?: string | null;
+};
+
+const songs: SeedSong[] = [
   // ─── SMOKESHOP (Sep 11, 2022) ────────────────────────────────────────────
   {
     title: 'INTRO',
@@ -978,7 +990,7 @@ async function main() {
         year: song.year,
         releaseDate: song.releaseDate,
         durationSecs: song.durationSecs,
-        singleCover: (song as any).singleCover ?? null,
+        singleCover: song.singleCover ?? null,
         albumCover: song.albumCover,
         description: song.description,
       },

@@ -29,11 +29,13 @@ export default function SongSearch({ palette }: Props) {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (!query.trim()) { setResults([]); setOpen(false); return; }
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) return;
+
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(async () => {
       try {
-        const res = await fetch(`/api/songs?q=${encodeURIComponent(query)}`);
+        const res = await fetch(`/api/songs?q=${encodeURIComponent(trimmedQuery)}`);
         if (!res.ok) {
           setResults([]);
           setOpen(true);
@@ -107,14 +109,22 @@ export default function SongSearch({ palette }: Props) {
             <input
               type="text"
               value={query}
-              onChange={e => setQuery(e.target.value)}
+              onChange={(e) => {
+                const nextQuery = e.target.value;
+                setQuery(nextQuery);
+
+                if (!nextQuery.trim()) {
+                  setResults([]);
+                  setOpen(false);
+                }
+              }}
               onBlur={() => {
                 setFocused(false);
                 setTimeout(() => setOpen(false), 150);
               }}
               onFocus={() => {
                 setFocused(true);
-                results.length > 0 && setOpen(true);
+                if (results.length > 0) setOpen(true);
               }}
               placeholder="type title, album, or feature"
               aria-label="Search smokedope2016 songs"

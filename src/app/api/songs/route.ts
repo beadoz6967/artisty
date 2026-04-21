@@ -1,6 +1,7 @@
 // GET /api/songs?q=<query> — returns matching songs for the search dropdown.
 import { NextRequest, NextResponse } from 'next/server';
 import { isSpotifyAuthError, searchSmokedopeSongs } from '@/lib/spotify';
+import { parseSongFeatures } from '@/lib/songFeatures';
 
 const SONG_SEARCH_TIMEOUT_MS = 20_000;
 
@@ -20,7 +21,7 @@ export async function GET(req: NextRequest) {
         id: song.id,
         slug: song.slug,
         title: song.title,
-        features: JSON.parse(song.features) as string[],
+        features: parseSongFeatures(song.features),
         year: song.year,
         singleCover: song.singleCover,
         albumCover: song.albumCover,
