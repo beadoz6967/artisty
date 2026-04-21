@@ -1,7 +1,6 @@
 // Smokedope world page — cloud-rap dossier with official artwork chronology.
 import Image from 'next/image';
 import type { CharacterConfig, DiscographyEntry, Palette } from '@/lib/types';
-import SongSearch from './SongSearch';
 
 type Props = {
   config: CharacterConfig;
@@ -170,14 +169,6 @@ export function SmokePage({ config }: Props) {
               <p className="text-sm leading-relaxed mt-2" style={{ color: SMOKE_COLORS.loreProse }}>{block.body}</p>
             </article>
           ))}
-        </div>
-      </section>
-
-      <section className="smoke-content smoke-virtualized mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-14">
-        <p style={{ color: palette.accent, ...revealDelay(0, 100, 0) }} className="mono smoke-kicker smoke-reveal text-[0.56rem]">Song vault</p>
-        <h2 className="smoke-heading smoke-reveal text-2xl sm:text-3xl font-black mt-3" style={revealDelay(0, 180, 0)}>Search the full catalog</h2>
-        <div className="smoke-panel smoke-glass smoke-reveal mt-6 max-w-lg p-4" style={revealDelay(0, 260, 0)}>
-          <SongSearch palette={palette} />
         </div>
       </section>
 
