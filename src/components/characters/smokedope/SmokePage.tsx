@@ -90,7 +90,9 @@ export function SmokePage({ config }: Props) {
   const { palette, meta, lore, discography, displayName, gallery, highlights } = config;
 
   const sortedDiscography = [...(discography ?? [])].sort((a, b) => b.year - a.year);
-  const trilogyAlbums = sortedDiscography.filter((d) => d.tracklist);
+  const trilogyAlbums = [...(discography ?? [])]
+    .filter((d) => d.tracklist)
+    .sort((a, b) => a.year - b.year);
 
   return (
     <LenisProvider>
