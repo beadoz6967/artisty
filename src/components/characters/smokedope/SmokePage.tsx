@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import type { CharacterConfig, DiscographyEntry, Palette } from '@/lib/types';
 import { ScrollReveal } from '@/components/motion/ScrollReveal';
+import { LenisProvider } from '@/components/motion/LenisProvider';
 
 type Props = {
   config: CharacterConfig;
@@ -92,18 +93,19 @@ export function SmokePage({ config }: Props) {
   const trilogyAlbums = sortedDiscography.filter((d) => d.tracklist);
 
   return (
-    <div
-      style={{
-        '--color-bg': palette.bg,
-        '--color-surface': palette.surface,
-        '--color-card': palette.card,
-        '--color-accent': palette.accent,
-        '--color-text': palette.text,
-        '--color-muted': palette.muted,
-        '--color-border': palette.border,
-      } as React.CSSProperties}
-      className="site-shell smoke-shell min-h-screen text-[var(--color-text)]"
-    >
+    <LenisProvider>
+      <div
+        style={{
+          '--color-bg': palette.bg,
+          '--color-surface': palette.surface,
+          '--color-card': palette.card,
+          '--color-accent': palette.accent,
+          '--color-text': palette.text,
+          '--color-muted': palette.muted,
+          '--color-border': palette.border,
+        } as React.CSSProperties}
+        className="site-shell smoke-shell min-h-screen text-[var(--color-text)]"
+      >
       <section className="smoke-content relative flex min-h-[60vh] sm:min-h-[calc(100vh-52px)] items-center justify-center overflow-hidden px-4 sm:px-6 py-10 sm:py-16 md:py-20">
         <Image
           src="/concert warehouse.jpg"
@@ -272,7 +274,8 @@ export function SmokePage({ config }: Props) {
         </section>
       )}
 
-      <div className="h-20" />
-    </div>
+        <div className="h-20" />
+      </div>
+    </LenisProvider>
   );
 }
