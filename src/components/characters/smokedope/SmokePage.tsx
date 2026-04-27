@@ -1,4 +1,7 @@
+"use client";
+
 // Smokedope world page — cloud-rap dossier with official artwork chronology.
+import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import type { CharacterConfig, DiscographyEntry, Palette } from '@/lib/types';
 import { ScrollReveal } from '@/components/motion/ScrollReveal';
@@ -16,8 +19,11 @@ const SMOKE_COLORS = {
   highlightValue: '#e3e7f1',
   loreProse: '#d0d6e4',
   timelineYear: '#b4c3dd',
+  timelineYearActive: '#ebf2ff',
   timelineTitle: '#e4e9f2',
   timelineNote: '#c7cfde',
+  timelineDockProse: '#d7deeb',
+  timelineRailMeta: '#95a7c4',
   tracklistLabel: '#b4c2dc',
   trackNum: '#7a8faa',
   trackTitle: '#e4e9f2',
@@ -88,8 +94,32 @@ function AlbumSection({ entry, palette, index }: AlbumSectionProps) {
 
 export function SmokePage({ config }: Props) {
   const { palette, meta, lore, discography, displayName, gallery, highlights } = config;
+  const [activeTimelineIndex, setActiveTimelineIndex] = useState(0);
 
   const sortedDiscography = [...(discography ?? [])].sort((a, b) => b.year - a.year);
+  const timelineBuckets = useMemo(() => {
+    const yearMap = new Map<number, number[]>();
+    sortedDiscography.forEach((entry, idx) => {
+      if (!yearMap.has(entry.year)) {
+        yearMap.set(entry.year, []);
+      }
+      yearMap.get(entry.year)?.push(idx);
+    });
+
+    return Array.from(yearMap.entries())
+      .sort((a, b) => b[0] - a[0])
+      .map(([year, indexes]) => ({ year, indexes }));
+  }, [sortedDiscography]);
+
+  const safeTimelineIndex =
+    sortedDiscography.length > 0
+      ? Math.min(activeTimelineIndex, sortedDiscography.length - 1)
+      : -1;
+  const activeTimelineEntry = safeTimelineIndex >= 0 ? sortedDiscography[safeTimelineIndex] : null;
+  const activeTimelineBucket = activeTimelineEntry
+    ? timelineBuckets.find((bucket) => bucket.year === activeTimelineEntry.year)
+    : null;
+
   const trilogyAlbums = [...(discography ?? [])]
     .filter((d) => d.tracklist)
     .sort((a, b) => a.year - b.year);
@@ -192,35 +222,120 @@ export function SmokePage({ config }: Props) {
           Timeline: official releases
         </ScrollReveal>
 
-        <div className="mt-8 space-y-4">
-          {sortedDiscography.map((entry, idx) => (
+        {sortedDiscography.length > 0 && (
+          <div className="mt-8 grid grid-cols-1 lg:grid-cols-[188px_1fr] gap-4 sm:gap-6">
             <ScrollReveal
-              as="article"
-              key={entry.title}
-              className="smoke-panel grid grid-cols-[56px_1fr_72px] sm:grid-cols-[70px_1fr_88px] md:grid-cols-[90px_1fr_112px] items-center gap-3 sm:gap-4 p-3 md:p-4"
-              delay={revealDelaySeconds(idx, 300, 60)}
+              as="nav"
+              className="smoke-panel smoke-glass p-3 sm:p-4"
+              delay={revealDelaySeconds(0, 280, 0)}
             >
-              <p className="mono text-xs" style={{ color: SMOKE_COLORS.timelineYear }}>{entry.year}</p>
-              <div>
-                <p className="text-base sm:text-lg leading-tight" style={{ color: SMOKE_COLORS.timelineTitle }}>{entry.title}</p>
-                {entry.note && <p className="text-xs mt-1" style={{ color: SMOKE_COLORS.timelineNote }}>{entry.note}</p>}
+              <p className="mono text-[0.54rem] uppercase tracking-[0.25em]" style={{ color: SMOKE_COLORS.timelineRailMeta }}>
+                Era scrubber
+              </p>
+              <div className="mt-3 flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-1 lg:pb-0">
+                {timelineBuckets.map((bucket) => {
+                  const isActiveYear = activeTimelineEntry?.year === bucket.year;
+                  const yearAnchorIndex = bucket.indexes[0] ?? 0;
+
+                  return (
+                    <button
+                      key={bucket.year}
+                      type="button"
+                      onClick={() => setActiveTimelineIndex(yearAnchorIndex)}
+                      className="smoke-panel w-full min-w-[104px] lg:min-w-0 px-3 py-2 text-left transition-colors"
+                      style={{
+                        borderColor: isActiveYear ? '#7ea0d8' : 'var(--color-border)',
+                        background: isActiveYear
+                          ? 'linear-gradient(180deg, rgba(64,102,170,0.45), rgba(23,32,52,0.7))'
+                          : 'linear-gradient(180deg, rgba(17,28,45,0.65), rgba(42,22,22,0.56))',
+                      }}
+                    >
+                      <p className="mono text-xs" style={{ color: isActiveYear ? SMOKE_COLORS.timelineYearActive : SMOKE_COLORS.timelineYear }}>
+                        {bucket.year}
+                      </p>
+                      <p className="mono text-[0.56rem] mt-1" style={{ color: SMOKE_COLORS.timelineRailMeta }}>
+                        {bucket.indexes.length} release{bucket.indexes.length === 1 ? '' : 's'}
+                      </p>
+                    </button>
+                  );
+                })}
               </div>
-              {entry.coverArt ? (
-                <div className="smoke-frame relative aspect-square w-[72px] sm:w-[88px] md:w-[112px] overflow-hidden">
-                  <Image
-                    src={entry.coverArt}
-                    alt={`${entry.title} cover`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 72px, (max-width: 768px) 88px, 112px"
-                  />
-                </div>
-              ) : (
-                <div className="smoke-frame aspect-square w-[72px] sm:w-[88px] md:w-[112px] bg-[var(--color-card)]" />
-              )}
             </ScrollReveal>
-          ))}
-        </div>
+
+            {activeTimelineEntry && (
+              <ScrollReveal
+                as="article"
+                className="smoke-panel smoke-glass p-4 sm:p-5 md:p-6"
+                delay={revealDelaySeconds(1, 320, 0)}
+              >
+                <div className="grid grid-cols-1 md:grid-cols-[1fr_118px] gap-5 items-start">
+                  <div>
+                    <p className="mono text-xs" style={{ color: SMOKE_COLORS.timelineYearActive }}>{activeTimelineEntry.year}</p>
+                    <h3 className="text-xl sm:text-2xl leading-tight mt-2" style={{ color: SMOKE_COLORS.timelineTitle }}>
+                      {activeTimelineEntry.title}
+                    </h3>
+                    {activeTimelineEntry.note && (
+                      <p className="text-sm mt-3 leading-relaxed" style={{ color: SMOKE_COLORS.timelineNote }}>
+                        {activeTimelineEntry.note}
+                      </p>
+                    )}
+                    {activeTimelineEntry.longDescription && (
+                      <p className="text-sm mt-3 leading-relaxed" style={{ color: SMOKE_COLORS.timelineDockProse }}>
+                        {activeTimelineEntry.longDescription}
+                      </p>
+                    )}
+
+                    {activeTimelineBucket && activeTimelineBucket.indexes.length > 1 && (
+                      <div className="mt-5">
+                        <p className="mono text-[0.54rem] uppercase tracking-[0.25em]" style={{ color: SMOKE_COLORS.timelineRailMeta }}>
+                          Release detail dock
+                        </p>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {activeTimelineBucket.indexes.map((entryIndex) => {
+                            const entry = sortedDiscography[entryIndex];
+                            const isActiveRelease = entryIndex === safeTimelineIndex;
+
+                            return (
+                              <button
+                                key={`${entry.title}-${entry.year}`}
+                                type="button"
+                                onClick={() => setActiveTimelineIndex(entryIndex)}
+                                className="smoke-chip px-3 py-2 text-[0.56rem] uppercase tracking-[0.16em] transition-colors"
+                                style={{
+                                  color: isActiveRelease ? SMOKE_COLORS.timelineYearActive : SMOKE_COLORS.timelineNote,
+                                  borderColor: isActiveRelease ? '#8da9d9' : 'var(--color-border)',
+                                  background: isActiveRelease
+                                    ? 'linear-gradient(180deg, rgba(77,112,176,0.42), rgba(29,34,56,0.74))'
+                                    : 'linear-gradient(180deg, rgba(26,34,48,0.55), rgba(47,24,24,0.52))',
+                                }}
+                              >
+                                {entry.title}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {activeTimelineEntry.coverArt ? (
+                    <div className="smoke-frame relative aspect-square w-[118px] overflow-hidden md:justify-self-end">
+                      <Image
+                        src={activeTimelineEntry.coverArt}
+                        alt={`${activeTimelineEntry.title} cover`}
+                        fill
+                        className="object-cover"
+                        sizes="118px"
+                      />
+                    </div>
+                  ) : (
+                    <div className="smoke-frame aspect-square w-[118px] bg-[var(--color-card)] md:justify-self-end" />
+                  )}
+                </div>
+              </ScrollReveal>
+            )}
+          </div>
+        )}
       </section>
 
       {trilogyAlbums.map((entry, idx) => (
